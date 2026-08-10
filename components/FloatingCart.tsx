@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+type Language = "uk" | "es";
+
 type CartItem = {
   id: string;
   type?: "tshirt" | "patch";
@@ -13,10 +15,36 @@ type CartItem = {
 export default function FloatingCart() {
   const [quantity, setQuantity] = useState(0);
   const [total, setTotal] = useState(0);
+  const [language, setLanguage] =
+    useState<Language>("uk");
+
+  /*
+  =========================================================
+  LANGUAGE
+  =========================================================
+  */
+
+  const updateLanguage = () => {
+    const saved =
+      localStorage.getItem("selah-language");
+
+    if (saved === "uk" || saved === "es") {
+      setLanguage(saved);
+    } else {
+      setLanguage("uk");
+    }
+  };
+
+  /*
+  =========================================================
+  CART
+  =========================================================
+  */
 
   const updateCart = () => {
     try {
-      const saved = localStorage.getItem("selah-cart");
+      const saved =
+        localStorage.getItem("selah-cart");
 
       if (!saved) {
         setQuantity(0);
@@ -24,48 +52,114 @@ export default function FloatingCart() {
         return;
       }
 
-      const cart: CartItem[] = JSON.parse(saved);
+      const cart: CartItem[] =
+        JSON.parse(saved);
 
-      const itemsCount = cart.reduce(
-        (sum, item) => sum + (Number(item.quantity) || 1),
-        0
-      );
-
-      const cartTotal = cart.reduce(
-        (sum, item) =>
-          sum +
-          (Number(item.price) || 0) *
+      const itemsCount =
+        cart.reduce(
+          (sum, item) =>
+            sum +
             (Number(item.quantity) || 1),
-        0
-      );
+          0
+        );
+
+      const cartTotal =
+        cart.reduce(
+          (sum, item) =>
+            sum +
+            (Number(item.price) || 0) *
+              (Number(item.quantity) || 1),
+          0
+        );
 
       setQuantity(itemsCount);
       setTotal(cartTotal);
+
     } catch {
       setQuantity(0);
       setTotal(0);
     }
   };
 
+  /*
+  =========================================================
+  EFFECTS
+  =========================================================
+  */
+
   useEffect(() => {
     updateCart();
+    updateLanguage();
 
-    window.addEventListener("storage", updateCart);
-    window.addEventListener("selah-cart-updated", updateCart);
+    window.addEventListener(
+      "storage",
+      updateCart
+    );
+
+    window.addEventListener(
+      "selah-cart-updated",
+      updateCart
+    );
+
+    window.addEventListener(
+      "selah-language-changed",
+      updateLanguage
+    );
+
+    window.addEventListener(
+      "language-changed",
+      updateLanguage
+    );
 
     return () => {
-      window.removeEventListener("storage", updateCart);
+      window.removeEventListener(
+        "storage",
+        updateCart
+      );
+
       window.removeEventListener(
         "selah-cart-updated",
         updateCart
       );
+
+      window.removeEventListener(
+        "selah-language-changed",
+        updateLanguage
+      );
+
+      window.removeEventListener(
+        "language-changed",
+        updateLanguage
+      );
     };
   }, []);
+
+  /*
+  =========================================================
+  TRANSLATION
+  =========================================================
+  */
+
+  const cartLabel =
+    language === "es"
+      ? "CARRITO"
+      : "КОШИК";
+
+  const ariaLabel =
+    language === "es"
+      ? "Abrir carrito"
+      : "Відкрити кошик";
+
+  /*
+  =========================================================
+  RETURN
+  =========================================================
+  */
 
   return (
     <Link
       href="/cart"
-      aria-label="Відкрити кошик"
+      aria-label={ariaLabel}
       className="
         fixed
         bottom-6
@@ -74,6 +168,7 @@ export default function FloatingCart() {
         group
       "
     >
+
       {/* COLOR GLOW */}
 
       <div
@@ -117,6 +212,7 @@ export default function FloatingCart() {
           group-hover:border-white/50
         "
       >
+
         {/* ICON */}
 
         <div
@@ -162,13 +258,25 @@ export default function FloatingCart() {
         {/* INFORMATION */}
 
         <div className="hidden min-w-[75px] sm:block">
-          <p className="text-[9px] uppercase tracking-[0.25em] text-white/40">
-            Кошик
+
+          <p
+            className="
+              text-[9px]
+              uppercase
+              tracking-[0.25em]
+              text-white/40
+            "
+          >
+            {cartLabel}
           </p>
 
           <p className="mt-0.5 text-sm font-medium">
-            {total.toFixed(2).replace(".", ",")} €
+            {total
+              .toFixed(2)
+              .replace(".", ",")}{" "}
+            €
           </p>
+
         </div>
 
         {/* ARROW */}
@@ -184,7 +292,9 @@ export default function FloatingCart() {
         >
           →
         </span>
+
       </div>
+
     </Link>
   );
 }

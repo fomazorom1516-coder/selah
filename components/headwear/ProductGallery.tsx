@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 
-type Language = "uk" | "es" | "en";
+type Language = "uk" | "es";
 
 type Product = {
   id: string;
@@ -37,36 +37,28 @@ const translations = {
     material: "Матеріал",
     price: "Ціна",
     color: "Колір",
+
     chooseCap: "Обрати бейсболку →",
     chooseBucket: "Обрати панаму →",
+
     daily: "SELAH — носи свою віру щодня.",
+
     cap: "бейсболку",
     bucket: "панаму",
-    home: "На головну",
   },
 
   es: {
     material: "Material",
     price: "Precio",
     color: "Color",
+
     chooseCap: "Elegir gorra →",
     chooseBucket: "Elegir sombrero →",
+
     daily: "SELAH — lleva tu fe cada día.",
+
     cap: "gorra",
     bucket: "sombrero",
-    home: "Inicio",
-  },
-
-  en: {
-    material: "Material",
-    price: "Price",
-    color: "Color",
-    chooseCap: "Choose cap →",
-    chooseBucket: "Choose bucket hat →",
-    daily: "SELAH — wear your faith every day.",
-    cap: "cap",
-    bucket: "bucket hat",
-    home: "Home",
   },
 };
 
@@ -84,90 +76,218 @@ const productTranslations: Record<
       description: string;
       material?: string;
     };
+
     es: {
-      name: string;
-      description: string;
-      material?: string;
-    };
-    en: {
       name: string;
       description: string;
       material?: string;
     };
   }
 > = {
+
   /*
-  -------------------------------------------------------
-  CLASSIC CAP
-  -------------------------------------------------------
+  =======================================================
+  CLASSIC
+  =======================================================
   */
 
-  "classic-cap": {
+  classic: {
     uk: {
       name: "Класична бейсболка",
+
       description:
         "Класична шестипанельна бейсболка SELAH із преміальною вишивкою для щоденного використання.",
+
       material:
         "Модель Clique Daris — конструкція Sandwich, контрастний козирок та регульована застібка.",
     },
 
     es: {
       name: "Gorra clásica",
+
       description:
         "Gorra clásica de seis paneles SELAH con bordado premium, creada para el uso diario.",
+
       material:
         "Modelo Clique Daris — construcción Sandwich, visera de contraste y cierre ajustable.",
-    },
-
-    en: {
-      name: "Classic Cap",
-      description:
-        "Classic six-panel SELAH cap with premium embroidery, designed for everyday use.",
-      material:
-        "Clique Daris model — Sandwich construction, contrasting visor and adjustable closure.",
     },
   },
 
   /*
-  -------------------------------------------------------
-  BUCKET HAT
-  -------------------------------------------------------
+  =======================================================
+  PERFORMANCE
+  =======================================================
   */
 
-  "classic-bucket": {
+  performance: {
     uk: {
-      name: "Класична панама",
+      name: "Спортивна бейсболка",
+
       description:
-        "Класична панама SELAH із преміальною вишивкою, створена для щоденного використання.",
+        "Легка спортивна бейсболка SELAH із вентиляцією, створена для активного способу життя та спекотної погоди.",
+
       material:
-        "Преміальна тканина та комфортна конструкція для повсякденного носіння.",
+        "Модель Eagle із задньою перфорованою панеллю для відмінної вентиляції.",
     },
 
     es: {
-      name: "Bucket Hat clásico",
+      name: "Gorra deportiva",
+
       description:
-        "Bucket hat clásico SELAH con bordado premium, creado para el uso diario.",
+        "Gorra deportiva ligera SELAH con ventilación, diseñada para un estilo de vida activo y los días calurosos.",
+
       material:
-        "Tejido premium y construcción cómoda para el uso diario.",
+        "Modelo Eagle con panel trasero perforado para una excelente ventilación.",
+    },
+  },
+
+  /*
+  =======================================================
+  TRUCKER
+  =======================================================
+  */
+
+  trucker: {
+    uk: {
+      name: "Бейсболка Trucker",
+
+      description:
+        "Класична бейсболка Trucker із сіткою для кращої вентиляції та преміальною передньою панеллю SELAH.",
+
+      material:
+        "Саржа з чесаної бавовни. Задня частина виготовлена з поліестерової сітки для кращої вентиляції.",
     },
 
-    en: {
-      name: "Classic Bucket Hat",
+    es: {
+      name: "Gorra Trucker",
+
       description:
-        "Classic SELAH bucket hat with premium embroidery, created for everyday use.",
+        "Gorra Trucker clásica con panel trasero de malla para una mejor ventilación y panel frontal premium SELAH.",
+
       material:
-        "Premium fabric and comfortable construction for everyday wear.",
+        "Sarga de algodón peinado. La parte trasera está fabricada con malla de poliéster para una mejor ventilación.",
+    },
+  },
+
+  /*
+  =======================================================
+  BUCKET
+  =======================================================
+  */
+
+  bucket: {
+    uk: {
+      name: "Панама",
+
+      description:
+        "Стильна панама SELAH із вишитим логотипом та змінним патчем для повсякденного носіння.",
+
+      material:
+        "100% бавовна. Модель у стилі BOB з ефектом washed для характерного м’якого та злегка вінтажного вигляду.",
+    },
+
+    es: {
+      name: "Sombrero Bucket",
+
+      description:
+        "Bucket hat elegante SELAH con logotipo bordado y parche intercambiable para el uso diario.",
+
+      material:
+        "100% algodón. Modelo estilo BOB con efecto washed para conseguir un tacto suave y un aspecto ligeramente vintage.",
     },
   },
 };
 
 /*
 =========================================================
-FALLBACK TRANSLATION
+COLOR TRANSLATIONS
 =========================================================
 */
 
-function getProductTranslation(
+function getColorTranslation(
+  colorName: string,
+  language: Language
+) {
+  if (language === "uk") {
+    return colorName;
+  }
+
+  const normalized = colorName
+    .toLowerCase()
+    .trim();
+
+  if (
+    normalized.includes("син") ||
+    normalized.includes("blue") ||
+    normalized.includes("azul")
+  ) {
+    return "Azul";
+  }
+
+  if (
+    normalized.includes("чор") ||
+    normalized.includes("black") ||
+    normalized.includes("negro")
+  ) {
+    return "Negro";
+  }
+
+  if (
+    normalized.includes("білий") ||
+    normalized.includes("white") ||
+    normalized.includes("blanco")
+  ) {
+    return "Blanco";
+  }
+
+  if (
+    normalized.includes("олив") ||
+    normalized.includes("olive") ||
+    normalized.includes("verde")
+  ) {
+    return "Oliva";
+  }
+
+  if (
+    normalized.includes("celeste")
+  ) {
+    return "Celeste";
+  }
+
+  return colorName;
+}
+
+/*
+=========================================================
+READ LANGUAGE
+=========================================================
+*/
+
+function getLanguage(): Language {
+  if (typeof window === "undefined") {
+    return "uk";
+  }
+
+  const saved =
+    localStorage.getItem("selah-language");
+
+  if (
+    saved === "uk" ||
+    saved === "es"
+  ) {
+    return saved;
+  }
+
+  return "uk";
+}
+
+/*
+=========================================================
+GET PRODUCT TRANSLATION
+=========================================================
+*/
+
+function getLocalizedProduct(
   product: Product,
   language: Language
 ) {
@@ -178,41 +298,11 @@ function getProductTranslation(
     return translation[language];
   }
 
-  /*
-  Якщо для нового товару ще немає окремого
-  перекладу — використовуємо оригінальний текст.
-  */
-
   return {
     name: product.name,
     description: product.description,
     material: product.material,
   };
-}
-
-/*
-=========================================================
-LANGUAGE
-=========================================================
-*/
-
-function getSavedLanguage(): Language {
-  if (typeof window === "undefined") {
-    return "uk";
-  }
-
-  const saved =
-    localStorage.getItem("selah-language");
-
-  if (
-    saved === "uk" ||
-    saved === "es" ||
-    saved === "en"
-  ) {
-    return saved;
-  }
-
-  return "uk";
 }
 
 /*
@@ -242,11 +332,11 @@ export default function ProductGallery({
 
   useEffect(() => {
 
-    setLanguage(getSavedLanguage());
-
     const updateLanguage = () => {
-      setLanguage(getSavedLanguage());
+      setLanguage(getLanguage());
     };
+
+    updateLanguage();
 
     window.addEventListener(
       "selah-language-changed",
@@ -286,14 +376,15 @@ export default function ProductGallery({
 
   /*
   =======================================================
-  TRANSLATIONS
+  LOCALIZED DATA
   =======================================================
   */
 
-  const t = translations[language];
+  const t =
+    translations[language];
 
   const localizedProduct =
-    getProductTranslation(
+    getLocalizedProduct(
       product,
       language
     );
@@ -305,11 +396,6 @@ export default function ProductGallery({
   const isBucket =
     product.category === "bucket";
 
-  const productType =
-    isBucket
-      ? t.bucket
-      : t.cap;
-
   const chooseButton =
     isBucket
       ? t.chooseBucket
@@ -317,7 +403,7 @@ export default function ProductGallery({
 
   /*
   =======================================================
-  NEXT IMAGE
+  IMAGE NAVIGATION
   =======================================================
   */
 
@@ -330,12 +416,6 @@ export default function ProductGallery({
     );
 
   };
-
-  /*
-  =======================================================
-  PREVIOUS IMAGE
-  =======================================================
-  */
 
   const prevImage = () => {
 
@@ -375,16 +455,17 @@ export default function ProductGallery({
         name:
           localizedProduct.name,
 
-        price: 14.99,
+        price:
+          14.99,
 
-        quantity: 1,
+        quantity:
+          1,
 
         image:
           product.gallery[0],
 
         category:
           "headwear",
-
       };
 
       cart.push(newItem);
@@ -411,6 +492,12 @@ export default function ProductGallery({
 
   };
 
+  /*
+  =======================================================
+  RETURN
+  =======================================================
+  */
+
   return (
 
     <section
@@ -426,9 +513,9 @@ export default function ProductGallery({
       "
     >
 
-      {/* =====================================================
+      {/* =================================================
           LEFT — IMAGE
-      ===================================================== */}
+      ================================================= */}
 
       <div
         className="relative"
@@ -439,8 +526,6 @@ export default function ProductGallery({
           setIsHovered(false)
         }
       >
-
-        {/* GLOW */}
 
         <motion.div
           className="
@@ -471,8 +556,6 @@ export default function ProductGallery({
               "blur(80px)",
           }}
         />
-
-        {/* MAIN IMAGE */}
 
         <motion.div
           className="
@@ -562,9 +645,6 @@ export default function ProductGallery({
 
           </AnimatePresence>
 
-
-          {/* IMAGE GLOW */}
-
           <motion.div
             className="
               pointer-events-none
@@ -590,9 +670,6 @@ export default function ProductGallery({
             }}
           />
 
-
-          {/* SELAH */}
-
           <div
             className="
               absolute
@@ -613,10 +690,9 @@ export default function ProductGallery({
 
         </motion.div>
 
-
-        {/* =====================================================
+        {/* =================================================
             THUMBNAILS
-        ===================================================== */}
+        ================================================= */}
 
         <div
           className="
@@ -674,7 +750,9 @@ export default function ProductGallery({
 
                   <Image
                     src={image}
-                    alt={`${localizedProduct.name} ${index + 1}`}
+                    alt={
+                      `${localizedProduct.name} ${index + 1}`
+                    }
                     fill
                     className="object-cover"
                     sizes="80px"
@@ -689,10 +767,9 @@ export default function ProductGallery({
 
         </div>
 
-
-        {/* =====================================================
+        {/* =================================================
             ARROWS
-        ===================================================== */}
+        ================================================= */}
 
         <div
           className="
@@ -728,7 +805,6 @@ export default function ProductGallery({
             ←
           </motion.button>
 
-
           <motion.button
             type="button"
             onClick={nextImage}
@@ -758,10 +834,9 @@ export default function ProductGallery({
 
       </div>
 
-
-      {/* =====================================================
+      {/* =================================================
           RIGHT — INFORMATION
-      ===================================================== */}
+      ================================================= */}
 
       <motion.div
         initial={{
@@ -777,8 +852,6 @@ export default function ProductGallery({
         }}
       >
 
-        {/* BRAND */}
-
         <p
           className="
             text-sm
@@ -789,9 +862,6 @@ export default function ProductGallery({
         >
           SELAH
         </p>
-
-
-        {/* PRODUCT NAME */}
 
         <h2
           className="
@@ -806,9 +876,6 @@ export default function ProductGallery({
           {localizedProduct.name}
         </h2>
 
-
-        {/* DESCRIPTION */}
-
         <p
           className="
             mt-7
@@ -822,10 +889,9 @@ export default function ProductGallery({
           {localizedProduct.description}
         </p>
 
-
-        {/* =====================================================
+        {/* =================================================
             MATERIAL
-        ===================================================== */}
+        ================================================= */}
 
         {localizedProduct.material && (
 
@@ -848,7 +914,6 @@ export default function ProductGallery({
               {t.material}
             </p>
 
-
             <p
               className="
                 text-sm
@@ -864,10 +929,9 @@ export default function ProductGallery({
 
         )}
 
-
-        {/* =====================================================
+        {/* =================================================
             PRICE
-        ===================================================== */}
+        ================================================= */}
 
         <div className="mt-9">
 
@@ -882,7 +946,6 @@ export default function ProductGallery({
           >
             {t.price}
           </p>
-
 
           <motion.div
             whileHover={{
@@ -922,10 +985,9 @@ export default function ProductGallery({
 
         </div>
 
-
-        {/* =====================================================
+        {/* =================================================
             COLOR
-        ===================================================== */}
+        ================================================= */}
 
         <div className="mt-9">
 
@@ -940,7 +1002,6 @@ export default function ProductGallery({
           >
             {t.color}
           </p>
-
 
           <div
             className="
@@ -984,14 +1045,16 @@ export default function ProductGallery({
                     }}
                   />
 
-
                   <span
                     className="
                       text-sm
                       text-zinc-300
                     "
                   >
-                    {color.name}
+                    {getColorTranslation(
+                      color.name,
+                      language
+                    )}
                   </span>
 
                 </motion.div>
@@ -1003,10 +1066,9 @@ export default function ProductGallery({
 
         </div>
 
-
-        {/* =====================================================
+        {/* =================================================
             ADD TO CART
-        ===================================================== */}
+        ================================================= */}
 
         <motion.button
           type="button"
@@ -1039,8 +1101,9 @@ export default function ProductGallery({
           {chooseButton}
         </motion.button>
 
-
-        {/* SMALL TEXT */}
+        {/* =================================================
+            FOOT TEXT
+        ================================================= */}
 
         <p
           className="
@@ -1055,6 +1118,5 @@ export default function ProductGallery({
       </motion.div>
 
     </section>
-
   );
 }
