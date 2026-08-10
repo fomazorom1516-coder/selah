@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 
 const sizes = ["XS", "S", "M", "L", "XL", "XXL", "3XL"];
 
+type Language = "uk" | "es";
+
 type SelectedPatch = {
   id: number;
   image: string;
@@ -26,18 +28,52 @@ type CartItem = {
 
 type TShirt = {
   id: string;
-  name: string;
-  description: string;
+
+  name: {
+    uk: string;
+    es: string;
+  };
+
+  description: {
+    uk: string;
+    es: string;
+  };
+
   images: string[];
   price: number;
-  material: string;
+
+  material: {
+    uk: string;
+    es: string;
+  };
+
   weight: string;
-  gender: string;
-  cut: string;
-  sleeve: string;
-  buttons?: string;
+
+  gender: {
+    uk: string;
+    es: string;
+  };
+
+  cut: {
+    uk: string;
+    es: string;
+  };
+
+  sleeve: {
+    uk: string;
+    es: string;
+  };
+
+  buttons?: {
+    uk: string;
+    es: string;
+  };
+
   color: {
-    name: string;
+    name: {
+      uk: string;
+      es: string;
+    };
     value: string;
   };
 };
@@ -46,31 +82,52 @@ const tshirts: TShirt[] = [
   {
     id: "premium-polo",
 
-    name: "SELAH — Premium Polo",
+    name: {
+      uk: "SELAH — Premium Polo",
+      es: "SELAH — Premium Polo",
+    },
 
-    description:
-      "Преміальне чоловіче поло з коротким рукавом. Вишитий символ SELAH розташований на грудях. На спині передбачене місце для змінного Velcro-патча.",
+    description: {
+      uk: "Преміальне чоловіче поло з коротким рукавом. Вишитий символ SELAH розташований на грудях. На спині передбачене місце для змінного Velcro-патча.",
+      es: "Polo masculino premium de manga corta. El símbolo bordado de SELAH está situado en el pecho. La parte trasera está preparada para un parche Velcro intercambiable.",
+    },
 
-    images: [
-      "/images/products/tshirt-05.PNG",
-    ],
+    images: ["/images/products/tshirt-05.PNG"],
 
     price: 29.99,
 
-    material: "95% algodón / 5% elastano",
+    material: {
+      uk: "95% бавовна / 5% еластан",
+      es: "95% algodón / 5% elastano",
+    },
 
     weight: "215 g/m²",
 
-    gender: "Hombre",
+    gender: {
+      uk: "Чоловічий",
+      es: "Hombre",
+    },
 
-    cut: "Premium Polo",
+    cut: {
+      uk: "Premium Polo",
+      es: "Premium Polo",
+    },
 
-    sleeve: "Короткий",
+    sleeve: {
+      uk: "Короткий",
+      es: "Corta",
+    },
 
-    buttons: "2 buttons / pearl look",
+    buttons: {
+      uk: "2 ґудзики / перламутровий вигляд",
+      es: "2 botones / efecto nacarado",
+    },
 
     color: {
-      name: "Black",
+      name: {
+        uk: "Чорний",
+        es: "Negro",
+      },
       value: "#111111",
     },
   },
@@ -78,10 +135,15 @@ const tshirts: TShirt[] = [
   {
     id: "unisex-royal-blue",
 
-    name: "SELAH — Unisex Royal Blue",
+    name: {
+      uk: "SELAH — Unisex Royal Blue",
+      es: "SELAH — Unisex Royal Blue",
+    },
 
-    description:
-      "Універсальна футболка SELAH у кольорі Royal Blue. Підходить як для чоловіків, так і для жінок. Мінімалістичний дизайн створений для щоденного носіння та поєднання зі змінними SELAH-патчами.",
+    description: {
+      uk: "Універсальна футболка SELAH у кольорі Royal Blue. Підходить як для чоловіків, так і для жінок. Мінімалістичний дизайн створений для щоденного носіння та поєднання зі змінними SELAH-патчами.",
+      es: "Camiseta unisex SELAH en color Royal Blue. Diseñada tanto para hombres como para mujeres. Un diseño minimalista pensado para el uso diario y para combinar con los parches SELAH intercambiables.",
+    },
 
     images: [
       "/images/products/tshirt-02.PNG",
@@ -90,19 +152,33 @@ const tshirts: TShirt[] = [
 
     price: 19.99,
 
-    material:
-      "Punto liso, 100% algodón peinado y pre encogido",
+    material: {
+      uk: "Гладка тканина, 100% чесана попередньо усаджена бавовна",
+      es: "Punto liso, 100% algodón peinado y preencogido",
+    },
 
     weight: "160 g/m²",
 
-    gender: "Unisex",
+    gender: {
+      uk: "Унісекс",
+      es: "Unisex",
+    },
 
-    cut: "Regular",
+    cut: {
+      uk: "Regular",
+      es: "Regular",
+    },
 
-    sleeve: "Короткий",
+    sleeve: {
+      uk: "Короткий",
+      es: "Corta",
+    },
 
     color: {
-      name: "Royal Blue",
+      name: {
+        uk: "Royal Blue",
+        es: "Royal Blue",
+      },
       value: "#2455a4",
     },
   },
@@ -110,30 +186,47 @@ const tshirts: TShirt[] = [
   {
     id: "unisex-navy",
 
-    name: "SELAH — Unisex Navy",
+    name: {
+      uk: "SELAH — Unisex Navy",
+      es: "SELAH — Unisex Navy",
+    },
 
-    description:
-      "Універсальна футболка SELAH у темно-синьому кольорі. Підходить як для чоловіків, так і для жінок. Легка та комфортна модель для щоденного носіння з мінімалістичним вишитим символом SELAH.",
+    description: {
+      uk: "Універсальна футболка SELAH у темно-синьому кольорі. Підходить як для чоловіків, так і для жінок. Легка та комфортна модель для щоденного носіння з мінімалістичним вишитим символом SELAH.",
+      es: "Camiseta unisex SELAH en color azul marino oscuro. Adecuada tanto para hombres como para mujeres. Un modelo ligero y cómodo para el uso diario con el símbolo SELAH bordado.",
+    },
 
-    images: [
-      "/images/products/tshirt-06.PNG",
-    ],
+    images: ["/images/products/tshirt-06.PNG"],
 
     price: 19.99,
 
-    material:
-      "100% algodón peinado y pre-encogido",
+    material: {
+      uk: "100% чесана попередньо усаджена бавовна",
+      es: "100% algodón peinado y preencogido",
+    },
 
     weight: "140 g/m²",
 
-    gender: "Unisex",
+    gender: {
+      uk: "Унісекс",
+      es: "Unisex",
+    },
 
-    cut: "Regular",
+    cut: {
+      uk: "Regular",
+      es: "Regular",
+    },
 
-    sleeve: "Короткий",
+    sleeve: {
+      uk: "Короткий",
+      es: "Corta",
+    },
 
     color: {
-      name: "Dark Navy",
+      name: {
+        uk: "Темно-синій",
+        es: "Azul marino oscuro",
+      },
       value: "#18202b",
     },
   },
@@ -141,10 +234,15 @@ const tshirts: TShirt[] = [
   {
     id: "oversize-zen",
 
-    name: "SELAH — Oversize Zen",
+    name: {
+      uk: "SELAH — Oversize Zen",
+      es: "SELAH — Oversize Zen",
+    },
 
-    description:
-      "Щільна oversize футболка SELAH з преміальним відчуттям тканини. Вільний крій створює сучасний повсякденний образ. Підходить як для чоловіків, так і для жінок.",
+    description: {
+      uk: "Щільна oversize футболка SELAH з преміальним відчуттям тканини. Вільний крій створює сучасний повсякденний образ. Підходить як для чоловіків, так і для жінок.",
+      es: "Camiseta oversize SELAH de tejido grueso con sensación premium. Su corte amplio crea un estilo moderno y casual. Adecuada tanto para hombres como para mujeres.",
+    },
 
     images: [
       "/images/products/tshirt-07.PNG",
@@ -153,26 +251,145 @@ const tshirts: TShirt[] = [
 
     price: 19.99,
 
-    material:
-      "100% algodón pesado",
+    material: {
+      uk: "100% щільна бавовна",
+      es: "100% algodón pesado",
+    },
 
     weight: "210 g/m²",
 
-    gender: "Unisex",
+    gender: {
+      uk: "Унісекс",
+      es: "Unisex",
+    },
 
-    cut: "Oversize",
+    cut: {
+      uk: "Oversize",
+      es: "Oversize",
+    },
 
-    sleeve: "Короткий",
+    sleeve: {
+      uk: "Короткий",
+      es: "Corta",
+    },
 
     color: {
-      name: "Azul Zen 263",
+      name: {
+        uk: "Azul Zen 263",
+        es: "Azul Zen 263",
+      },
       value: "#7b8490",
     },
   },
 ];
 
+const translations = {
+  uk: {
+    shirts: "Футболки",
+    heroText: "Носи не просто одяг. Носи своє послання.",
+    material: "Матеріал",
+    weight: "Щільність",
+    gender: "Стать",
+    cut: "Крій",
+    sleeve: "Рукав",
+    buttons: "Ґудзики",
+    patch: "Патч",
+    color: "Колір",
+    size: "Розмір",
+    quantity: "Кількість",
+    selectedPatch: "Обраний патч",
+    addPatch: "Додай свій патч",
+    removablePatch: "Змінний Velcro-патч для твого образу SELAH.",
+    changePatch: "Змінити патч →",
+    choosePatch: "Обрати патч →",
+    total: "Разом",
+    addToCart: "Додати в кошик →",
+    close: "Закрити ↑",
+    remove: "Видалити",
+    footerTitle: "Носи не просто одяг.",
+    footerTitle2: "Носи своє послання.",
+    footerText:
+      "Один одяг — різні послання. Змінюй патч і нагадуй собі про те, що справді важливе.",
+    velcro: "Змінний Velcro",
+  },
+
+  es: {
+    shirts: "Camisetas",
+    heroText: "No lleves solo ropa. Lleva tu mensaje.",
+    material: "Material",
+    weight: "Densidad",
+    gender: "Género",
+    cut: "Corte",
+    sleeve: "Manga",
+    buttons: "Botones",
+    patch: "Parche",
+    color: "Color",
+    size: "Talla",
+    quantity: "Cantidad",
+    selectedPatch: "Parche seleccionado",
+    addPatch: "Añade tu parche",
+    removablePatch: "Parche Velcro intercambiable para tu estilo SELAH.",
+    changePatch: "Cambiar parche →",
+    choosePatch: "Elegir parche →",
+    total: "Total",
+    addToCart: "Añadir al carrito →",
+    close: "Cerrar ↑",
+    remove: "Eliminar",
+    footerTitle: "No lleves solo ropa.",
+    footerTitle2: "Lleva tu mensaje.",
+    footerText:
+      "Una prenda — diferentes mensajes. Cambia el parche y recuerda lo que realmente importa.",
+    velcro: "Velcro intercambiable",
+  },
+};
+
+function getLanguage(): Language {
+  if (typeof window === "undefined") {
+    return "uk";
+  }
+
+  const possibleKeys = [
+    "selah-language",
+    "language",
+    "locale",
+    "selah-lang",
+  ];
+
+  for (const key of possibleKeys) {
+    const value = localStorage.getItem(key);
+
+    if (!value) continue;
+
+    const normalized = value.toLowerCase();
+
+    if (
+      normalized === "es" ||
+      normalized === "es-es" ||
+      normalized === "spanish" ||
+      normalized === "español"
+    ) {
+      return "es";
+    }
+
+    if (
+      normalized === "uk" ||
+      normalized === "ua" ||
+      normalized === "uk-ua" ||
+      normalized === "ukrainian" ||
+      normalized === "українська"
+    ) {
+      return "uk";
+    }
+  }
+
+  return "uk";
+}
+
 export default function TshirtsPage() {
-  const [selectedSize, setSelectedSize] = useState("M");
+  const [language, setLanguage] = useState<Language>("uk");
+
+  const [selectedSize, setSelectedSize] =
+    useState("M");
 
   const [selectedPatch, setSelectedPatch] =
     useState<SelectedPatch | null>(null);
@@ -184,6 +401,61 @@ export default function TshirtsPage() {
 
   const [currentImages, setCurrentImages] =
     useState<Record<string, number>>({});
+
+  /*
+  ========================================================
+  LANGUAGE
+  ========================================================
+  */
+
+  useEffect(() => {
+    const updateLanguage = () => {
+      setLanguage(getLanguage());
+    };
+
+    updateLanguage();
+
+    const interval = window.setInterval(
+      updateLanguage,
+      300
+    );
+
+    window.addEventListener(
+      "storage",
+      updateLanguage
+    );
+
+    window.addEventListener(
+      "languagechange",
+      updateLanguage
+    );
+
+    window.addEventListener(
+      "selah-language-changed",
+      updateLanguage
+    );
+
+    return () => {
+      window.clearInterval(interval);
+
+      window.removeEventListener(
+        "storage",
+        updateLanguage
+      );
+
+      window.removeEventListener(
+        "languagechange",
+        updateLanguage
+      );
+
+      window.removeEventListener(
+        "selah-language-changed",
+        updateLanguage
+      );
+    };
+  }, []);
+
+  const t = translations[language];
 
   /*
   ========================================================
@@ -207,7 +479,9 @@ export default function TshirtsPage() {
         setSelectedPatch(parsedPatch);
       }
     } catch {
-      localStorage.removeItem("selah-selected-patch");
+      localStorage.removeItem(
+        "selah-selected-patch"
+      );
     }
   }, []);
 
@@ -218,7 +492,9 @@ export default function TshirtsPage() {
   */
 
   const removePatch = () => {
-    localStorage.removeItem("selah-selected-patch");
+    localStorage.removeItem(
+      "selah-selected-patch"
+    );
 
     setSelectedPatch(null);
   };
@@ -236,7 +512,7 @@ export default function TshirtsPage() {
 
   /*
   ========================================================
-  CHANGE PRODUCT IMAGE
+  CHANGE IMAGE
   ========================================================
   */
 
@@ -274,18 +550,12 @@ export default function TshirtsPage() {
       }
     }
 
-    /*
-    ======================================================
-    ADD T-SHIRT
-    ======================================================
-    */
-
     const tshirtItem: CartItem = {
       id:
         "tshirt-" +
         product.id +
         "-" +
-        product.color.name +
+        product.color.name.uk +
         "-" +
         selectedSize +
         "-" +
@@ -293,13 +563,13 @@ export default function TshirtsPage() {
 
       type: "tshirt",
 
-      title: product.name,
+      title: product.name.uk,
 
       image: product.images[0],
 
       price: product.price,
 
-      color: product.color.name,
+      color: product.color.name.uk,
 
       size: selectedSize,
 
@@ -307,12 +577,6 @@ export default function TshirtsPage() {
     };
 
     cart.push(tshirtItem);
-
-    /*
-    ======================================================
-    ADD SELECTED PATCH
-    ======================================================
-    */
 
     if (selectedPatch) {
       const patchItem: CartItem = {
@@ -330,7 +594,8 @@ export default function TshirtsPage() {
 
         price: selectedPatch.price,
 
-        reference: selectedPatch.reference,
+        reference:
+          selectedPatch.reference,
 
         quantity: 1,
       };
@@ -338,32 +603,14 @@ export default function TshirtsPage() {
       cart.push(patchItem);
     }
 
-    /*
-    ======================================================
-    SAVE
-    ======================================================
-    */
-
     localStorage.setItem(
       "selah-cart",
       JSON.stringify(cart)
     );
 
-    /*
-    ======================================================
-    UPDATE FLOATING CART
-    ======================================================
-    */
-
     window.dispatchEvent(
       new Event("selah-cart-updated")
     );
-
-    /*
-    ======================================================
-    GO TO CART
-    ======================================================
-    */
 
     window.location.href = "/cart";
   };
@@ -383,9 +630,7 @@ export default function TshirtsPage() {
   return (
     <main className="min-h-screen bg-black text-white">
 
-      {/* ==================================================
-          HEADER
-      ================================================== */}
+      {/* HEADER */}
 
       <section className="mx-auto max-w-7xl px-6 pt-16 pb-12">
 
@@ -394,18 +639,16 @@ export default function TshirtsPage() {
         </p>
 
         <h1 className="mt-5 text-4xl font-light tracking-tight md:text-6xl">
-          Футболки
+          {t.shirts}
         </h1>
 
         <p className="mt-5 max-w-2xl text-sm leading-7 text-white/50 md:text-base">
-          Носи не просто одяг. Носи своє послання.
+          {t.heroText}
         </p>
 
       </section>
 
-      {/* ==================================================
-          PRODUCT GRID
-      ================================================== */}
+      {/* PRODUCTS */}
 
       <section className="mx-auto max-w-7xl px-6 pb-24">
 
@@ -448,9 +691,7 @@ export default function TshirtsPage() {
                 `}
               >
 
-                {/* ==================================================
-                    PHOTO
-                ================================================== */}
+                {/* PHOTO */}
 
                 <button
                   type="button"
@@ -477,8 +718,14 @@ export default function TshirtsPage() {
                   >
 
                     <img
-                      src={product.images[currentImage]}
-                      alt={product.name}
+                      src={
+                        product.images[
+                          currentImage
+                        ]
+                      }
+                      alt={
+                        product.name[language]
+                      }
                       className="
                         h-full
                         w-full
@@ -488,8 +735,6 @@ export default function TshirtsPage() {
                         group-hover:scale-[1.05]
                       "
                     />
-
-                    {/* GLOW */}
 
                     <div
                       className="
@@ -507,8 +752,6 @@ export default function TshirtsPage() {
                       }}
                     />
 
-                    {/* OVERLAY */}
-
                     <div
                       className="
                         pointer-events-none
@@ -521,24 +764,24 @@ export default function TshirtsPage() {
                       "
                     />
 
-                    {/* SELAH */}
-
-                    <div className="
-                      absolute
-                      left-4
-                      top-4
-                      rounded-full
-                      border
-                      border-white/15
-                      bg-black/60
-                      px-3
-                      py-2
-                      text-[9px]
-                      uppercase
-                      tracking-[0.25em]
-                      text-white/70
-                      backdrop-blur-xl
-                    ">
+                    <div
+                      className="
+                        absolute
+                        left-4
+                        top-4
+                        rounded-full
+                        border
+                        border-white/15
+                        bg-black/60
+                        px-3
+                        py-2
+                        text-[9px]
+                        uppercase
+                        tracking-[0.25em]
+                        text-white/70
+                        backdrop-blur-xl
+                      "
+                    >
                       SELAH
                     </div>
 
@@ -546,9 +789,7 @@ export default function TshirtsPage() {
 
                 </button>
 
-                {/* ==================================================
-                    IMAGE SELECTOR
-                ================================================== */}
+                {/* IMAGE SELECTOR */}
 
                 {product.images.length > 1 && (
 
@@ -599,9 +840,7 @@ export default function TshirtsPage() {
 
                 )}
 
-                {/* ==================================================
-                    BASIC INFORMATION
-                ================================================== */}
+                {/* BASIC INFORMATION */}
 
                 <div className="p-5">
 
@@ -610,11 +849,11 @@ export default function TshirtsPage() {
                     <div>
 
                       <h2 className="text-lg font-medium">
-                        {product.name}
+                        {product.name[language]}
                       </h2>
 
                       <p className="mt-2 line-clamp-2 text-xs leading-5 text-white/40">
-                        {product.description}
+                        {product.description[language]}
                       </p>
 
                     </div>
@@ -628,9 +867,7 @@ export default function TshirtsPage() {
 
                   </div>
 
-                  {/* ==================================================
-                      EXPANDED
-                  ================================================== */}
+                  {/* EXPANDED */}
 
                   <div
                     className={`
@@ -653,7 +890,7 @@ export default function TshirtsPage() {
                       <div className="border-t border-white/10 pt-6">
 
                         <p className="text-sm leading-6 text-white/60">
-                          {product.description}
+                          {product.description[language]}
                         </p>
 
                       </div>
@@ -663,53 +900,71 @@ export default function TshirtsPage() {
                       <div className="mt-6 space-y-3">
 
                         <Detail
-                          name="Матеріал"
-                          value={product.material}
+                          name={t.material}
+                          value={
+                            product.material[
+                              language
+                            ]
+                          }
                         />
 
                         <Detail
-                          name="Щільність"
+                          name={t.weight}
                           value={product.weight}
                         />
 
                         <Detail
-                          name="Стать"
-                          value={product.gender}
+                          name={t.gender}
+                          value={
+                            product.gender[
+                              language
+                            ]
+                          }
                         />
 
                         <Detail
-                          name="Крій"
-                          value={product.cut}
+                          name={t.cut}
+                          value={
+                            product.cut[
+                              language
+                            ]
+                          }
                         />
 
                         <Detail
-                          name="Рукав"
-                          value={product.sleeve}
+                          name={t.sleeve}
+                          value={
+                            product.sleeve[
+                              language
+                            ]
+                          }
                         />
 
                         {product.buttons && (
                           <Detail
-                            name="Ґудзики"
-                            value={product.buttons}
+                            name={t.buttons}
+                            value={
+                              product.buttons[
+                                language
+                              ]
+                            }
                           />
                         )}
 
                         <Detail
-                          name="Патч"
-                          value="Velcro / removable"
+                          name={t.patch}
+                          value={t.velcro}
                           last
                         />
 
                       </div>
 
-                      {/* ==================================================
-                          COLOR
-                      ================================================== */}
+                      {/* COLOR */}
 
                       <div className="mt-7">
 
                         <p className="text-xs uppercase tracking-[0.2em] text-white/40">
-                          Колір
+                          {t.color}
                         </p>
 
                         <div className="mt-4 flex items-center gap-3">
@@ -730,75 +985,81 @@ export default function TshirtsPage() {
                           />
 
                           <span className="text-sm text-white/70">
-                            {product.color.name}
+                            {
+                              product.color
+                                .name[language]
+                            }
                           </span>
 
                         </div>
 
                       </div>
 
-                      {/* ==================================================
-                          SIZE
-                      ================================================== */}
+                      {/* SIZE */}
 
                       <div className="mt-7">
 
                         <p className="text-xs uppercase tracking-[0.2em] text-white/40">
-                          Розмір
+                          {t.size}
                         </p>
 
                         <div className="mt-4 grid grid-cols-4 gap-2">
 
-                          {sizes.map((size) => (
+                          {sizes.map(
+                            (size) => (
 
-                            <button
-                              key={size}
-                              type="button"
-                              onClick={() =>
-                                setSelectedSize(size)
-                              }
-                              className={`
-                                h-10
-                                rounded-lg
-                                border
-                                text-xs
-                                transition-all
-
-                                ${
-                                  selectedSize === size
-                                    ? "border-white bg-white text-black"
-                                    : "border-white/15 bg-white/[0.03] hover:border-white/60"
+                              <button
+                                key={size}
+                                type="button"
+                                onClick={() =>
+                                  setSelectedSize(
+                                    size
+                                  )
                                 }
-                              `}
-                            >
-                              {size}
-                            </button>
+                                className={`
+                                  h-10
+                                  rounded-lg
+                                  border
+                                  text-xs
+                                  transition-all
 
-                          ))}
+                                  ${
+                                    selectedSize ===
+                                    size
+                                      ? "border-white bg-white text-black"
+                                      : "border-white/15 bg-white/[0.03] hover:border-white/60"
+                                  }
+                                `}
+                              >
+                                {size}
+                              </button>
+
+                            )
+                          )}
 
                         </div>
 
                       </div>
 
-                      {/* ==================================================
-                          QUANTITY
-                      ================================================== */}
+                      {/* QUANTITY */}
 
                       <div className="mt-7">
 
                         <p className="text-xs uppercase tracking-[0.2em] text-white/40">
-                          Кількість
+                          {t.quantity}
                         </p>
 
-                        <div className="
-                          mt-4
-                          inline-flex
-                          items-center
-                          rounded-xl
-                          border
-                          border-white/15
-                          bg-white/[0.03]
-                        ">
+                        <div
+                          className="
+                            mt-4
+                            inline-flex
+                            items-center
+                            rounded-xl
+                            border
+                            border-white/15
+                            bg-white/[0.03]
+                          "
+                        >
 
                           <button
                             type="button"
@@ -847,32 +1108,34 @@ export default function TshirtsPage() {
 
                       </div>
 
-                      {/* ==================================================
-                          PATCH
-                      ================================================== */}
+                      {/* PATCH */}
 
-                      <div className="
-                        mt-7
-                        rounded-2xl
-                        border
-                        border-white/10
-                        bg-black/30
-                        p-4
-                      ">
+                      <div
+                        className="
+                          mt-7
+                          rounded-2xl
+                          border
+                          border-white/10
+                          bg-black/30
+                          p-4
+                        "
+                      >
 
                         <div className="flex items-center gap-3">
 
-                          <div className="
-                            flex
-                            h-10
-                            w-10
-                            shrink-0
-                            items-center
-                            justify-center
-                            rounded-full
-                            border
-                            border-white/15
-                          ">
+                          <div
+                            className="
+                              flex
+                              h-10
+                              w-10
+                              shrink-0
+                              items-center
+                              justify-center
+                              rounded-full
+                              border
+                              border-white/15
+                            "
+                          >
                             ✦
                           </div>
 
@@ -880,15 +1143,15 @@ export default function TshirtsPage() {
 
                             <p className="text-sm">
                               {selectedPatch
-                                ? "Обраний патч"
-                                : "Додай свій патч"}
+                                ? t.selectedPatch
+                                : t.addPatch}
                             </p>
 
                             <p className="mt-1 text-xs text-white/40">
 
                               {selectedPatch
                                 ? `${selectedPatch.title} — ${selectedPatch.reference}`
-                                : "Змінний Velcro-патч для твого образу SELAH."}
+                                : t.removablePatch}
 
                             </p>
 
@@ -898,21 +1161,27 @@ export default function TshirtsPage() {
 
                         {selectedPatch && (
 
-                          <div className="
-                            mt-4
-                            flex
-                            items-center
-                            gap-3
-                            rounded-xl
-                            border
-                            border-white/10
-                            bg-black
-                            p-2
-                          ">
+                          <div
+                            className="
+                              mt-4
+                              flex
+                              items-center
+                              gap-3
+                              rounded-xl
+                              border
+                              border-white/10
+                              bg-black
+                              p-2
+                            "
+                          >
 
                             <img
-                              src={selectedPatch.image}
-                              alt={selectedPatch.title}
+                              src={
+                                selectedPatch.image
+                              }
+                              alt={
+                                selectedPatch.title
+                              }
                               className="
                                 h-14
                                 w-14
@@ -924,17 +1193,24 @@ export default function TshirtsPage() {
                             <div className="min-w-0 flex-1">
 
                               <p className="truncate text-xs">
-                                {selectedPatch.title}
+                                {
+                                  selectedPatch.title
+                                }
                               </p>
 
                               <p className="mt-1 text-[10px] text-white/40">
-                                {selectedPatch.reference}
+                                {
+                                  selectedPatch.reference
+                                }
                               </p>
 
                               <p className="mt-1 text-xs">
                                 {selectedPatch.price
                                   .toFixed(2)
-                                  .replace(".", ",")}{" "}
+                                  .replace(
+                                    ".",
+                                    ","
+                                  )}{" "}
                                 €
                               </p>
 
@@ -942,7 +1218,9 @@ export default function TshirtsPage() {
 
                             <button
                               type="button"
-                              onClick={removePatch}
+                              onClick={
+                                removePatch
+                              }
                               className="
                                 text-[10px]
                                 text-white/35
@@ -950,7 +1228,7 @@ export default function TshirtsPage() {
                                 hover:text-white
                               "
                             >
-                              Видалити
+                              {t.remove}
                             </button>
 
                           </div>
@@ -977,28 +1255,28 @@ export default function TshirtsPage() {
                           "
                         >
                           {selectedPatch
-                            ? "Змінити патч →"
-                            : "Обрати патч →"}
+                            ? t.changePatch
+                            : t.choosePatch}
                         </button>
 
                       </div>
 
-                      {/* ==================================================
-                          TOTAL
-                      ================================================== */}
+                      {/* TOTAL */}
 
-                      <div className="
-                        mt-6
-                        flex
-                        items-center
-                        justify-between
-                        border-t
-                        border-white/10
-                        pt-5
-                      ">
+                      <div
+                        className="
+                          mt-6
+                          flex
+                          items-center
+                          justify-between
+                          border-t
+                          border-white/10
+                          pt-5
+                        "
+                      >
 
                         <span className="text-xs text-white/40">
-                          Разом
+                          {t.total}
                         </span>
 
                         <span className="text-xl font-light">
@@ -1011,16 +1289,17 @@ export default function TshirtsPage() {
                               : 0)
                           )
                             .toFixed(2)
-                            .replace(".", ",")}{" "}
+                            .replace(
+                              ".",
+                              ","
+                            )}{" "}
                           €
 
                         </span>
 
                       </div>
 
-                      {/* ==================================================
-                          ADD TO CART
-                      ================================================== */}
+                      {/* ADD TO CART */}
 
                       <button
                         type="button"
@@ -1044,7 +1323,7 @@ export default function TshirtsPage() {
                           hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]
                         "
                       >
-                        Додати в кошик →
+                        {t.addToCart}
                       </button>
 
                       {/* CLOSE */}
@@ -1052,7 +1331,9 @@ export default function TshirtsPage() {
                       <button
                         type="button"
                         onClick={() =>
-                          toggleProduct(product.id)
+                          toggleProduct(
+                            product.id
+                          )
                         }
                         className="
                           mt-4
@@ -1064,7 +1345,7 @@ export default function TshirtsPage() {
                           hover:text-white
                         "
                       >
-                        Закрити ↑
+                        {t.close}
                       </button>
 
                     </div>
@@ -1081,50 +1362,54 @@ export default function TshirtsPage() {
 
       </section>
 
-      {/* ==================================================
-          FOOTER
-      ================================================== */}
+      {/* FOOTER */}
 
-      <section className="
-        border-t
-        border-white/10
-        px-6
-        py-24
-        text-center
-      ">
+      <section
+        className="
+          border-t
+          border-white/10
+          px-6
+          py-24
+          text-center
+        "
+      >
 
-        <p className="
-          text-xs
-          uppercase
-          tracking-[0.4em]
-          text-white/40
-        ">
+        <p
+          className="
+            text-xs
+            uppercase
+            tracking-[0.4em]
+            text-white/40
+          "
+        >
           SELAH
         </p>
 
-        <h2 className="
-          mx-auto
-          mt-6
-          max-w-2xl
-          text-3xl
-          font-light
-          leading-tight
-          md:text-5xl
-        ">
-          Носи не просто одяг.
+        <h2
+          className="
+            mx-auto
+            mt-6
+            max-w-2xl
+            text-3xl
+            font-light
+            leading-tight
+            md:text-5xl
+          "
+        >
+          {t.footerTitle}
           <br />
-          Носи своє послання.
+          {t.footerTitle2}
         </h2>
 
-        <p className="
-          mx-auto
-          mt-6
-          max-w-xl
-          text-white/50
-        ">
-          Один одяг — різні послання.
-          Змінюй патч і нагадуй собі про те,
-          що справді важливе.
+        <p
+          className="
+            mx-auto
+            mt-6
+            max-w-xl
+            text-white/50
+          "
+        >
+          {t.footerText}
         </p>
 
       </section>
@@ -1133,9 +1418,8 @@ export default function TshirtsPage() {
   );
 }
 
-
 /* =========================================================
-   DETAIL COMPONENT
+   DETAIL
 ========================================================= */
 
 function Detail({
