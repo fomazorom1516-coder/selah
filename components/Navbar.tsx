@@ -17,6 +17,21 @@ export default function Navbar() {
     }
   }, []);
 
+  // Закриття меню клавішею Escape
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setContactsOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleEscape);
+
+    return () => {
+      window.removeEventListener("keydown", handleEscape);
+    };
+  }, []);
+
   const changeLanguage = (value: Language) => {
     setLanguage(value);
     localStorage.setItem("selah-language", value);
@@ -29,7 +44,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-[1000] border-b border-white/10 bg-black/80 backdrop-blur-xl">
 
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6">
 
         {/* LOGO */}
 
@@ -78,7 +93,7 @@ export default function Navbar() {
 
         {/* RIGHT */}
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
 
           {/* CONTACTS */}
 
@@ -86,8 +101,12 @@ export default function Navbar() {
 
             <button
               type="button"
-              onClick={() =>
-                setContactsOpen(!contactsOpen)
+              onClick={() => setContactsOpen(!contactsOpen)}
+              aria-expanded={contactsOpen}
+              aria-label={
+                language === "uk"
+                  ? "Відкрити контакти"
+                  : "Abrir contactos"
               }
               className="
                 flex
@@ -98,7 +117,8 @@ export default function Navbar() {
                 border
                 border-white/10
                 bg-white/[0.03]
-                px-4
+                px-3
+                sm:px-4
                 text-xs
                 text-white/60
                 transition
@@ -107,16 +127,34 @@ export default function Navbar() {
                 hover:text-white
               "
             >
+
               <span className="hidden sm:inline">
                 {language === "uk"
                   ? "Контакти"
                   : "Contacto"}
               </span>
 
-              <span className="sm:hidden">
+              <span className="sm:hidden text-base">
                 ☎
               </span>
+
             </button>
+
+
+            {/* CONTACT BACKDROP */}
+
+            {contactsOpen && (
+              <div
+                className="
+                  fixed
+                  inset-0
+                  z-[1000]
+                  bg-black/50
+                  backdrop-blur-[2px]
+                "
+                onClick={() => setContactsOpen(false)}
+              />
+            )}
 
 
             {/* CONTACT PANEL */}
@@ -124,28 +162,82 @@ export default function Navbar() {
             {contactsOpen && (
               <div
                 className="
-                  absolute
-                  right-0
-                  top-12
-                  w-72
+                  fixed
+                  left-4
+                  right-4
+                  top-24
+                  z-[1001]
+                  max-h-[calc(100dvh-7rem)]
+                  overflow-y-auto
                   rounded-2xl
                   border
                   border-white/10
                   bg-black
                   p-5
                   shadow-2xl
+
+                  sm:left-auto
+                  sm:right-6
+                  sm:w-80
+
+                  md:absolute
+                  md:left-auto
+                  md:right-0
+                  md:top-12
+                  md:w-72
                 "
+                onClick={(event) => event.stopPropagation()}
               >
 
-                <p className="text-xs uppercase tracking-[0.3em] text-white/40">
-                  SELAH
-                </p>
+                {/* PANEL HEADER */}
 
-                <h3 className="mt-3 text-lg text-white">
-                  {language === "uk"
-                    ? "Контакти"
-                    : "Contacto"}
-                </h3>
+                <div className="flex items-start justify-between">
+
+                  <div>
+
+                    <p className="text-xs uppercase tracking-[0.3em] text-white/40">
+                      SELAH
+                    </p>
+
+                    <h3 className="mt-3 text-lg text-white">
+                      {language === "uk"
+                        ? "Контакти"
+                        : "Contacto"}
+                    </h3>
+
+                  </div>
+
+
+                  {/* CLOSE */}
+
+                  <button
+                    type="button"
+                    onClick={() => setContactsOpen(false)}
+                    aria-label={
+                      language === "uk"
+                        ? "Закрити"
+                        : "Cerrar"
+                    }
+                    className="
+                      flex
+                      h-8
+                      w-8
+                      items-center
+                      justify-center
+                      rounded-full
+                      border
+                      border-white/10
+                      text-white/50
+                      transition
+                      hover:border-white/30
+                      hover:bg-white/10
+                      hover:text-white
+                    "
+                  >
+                    ×
+                  </button>
+
+                </div>
 
 
                 {/* PHONE */}
@@ -220,7 +312,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => changeLanguage("uk")}
-              className={`rounded-full px-3 py-1.5 text-[10px] transition ${
+              className={`rounded-full px-2.5 py-1.5 text-[10px] transition sm:px-3 ${
                 language === "uk"
                   ? "bg-white text-black"
                   : "text-white/40 hover:text-white"
@@ -232,7 +324,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => changeLanguage("es")}
-              className={`rounded-full px-3 py-1.5 text-[10px] transition ${
+              className={`rounded-full px-2.5 py-1.5 text-[10px] transition sm:px-3 ${
                 language === "es"
                   ? "bg-white text-black"
                   : "text-white/40 hover:text-white"
@@ -253,6 +345,7 @@ export default function Navbar() {
               flex
               h-10
               w-10
+              shrink-0
               items-center
               justify-center
               rounded-full
