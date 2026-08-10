@@ -10,7 +10,7 @@ export const headwear = [
     material:
       "Модель Clique Daris — конструкція Sandwich, контрастний козирок та регульована застібка.",
 
-    category: "cap",
+    category: "cap" as const,
 
     hero: "/images/headwear/classic-blue-1-front.jpg",
 
@@ -40,7 +40,7 @@ export const headwear = [
     material:
       "Модель Eagle із задньою перфорованою панеллю для відмінної вентиляції.",
 
-    category: "cap",
+    category: "cap" as const,
 
     hero: "/images/headwear/performance-black-1-front.jpg",
 
@@ -69,7 +69,7 @@ export const headwear = [
     material:
       "Саржа з чесаної бавовни. Задня частина виготовлена з поліестерової сітки для кращої вентиляції.",
 
-    category: "cap",
+    category: "cap" as const,
 
     hero: "/images/headwear/trucker-white-1-front.jpg",
 
@@ -97,7 +97,7 @@ export const headwear = [
     material:
       "100% бавовна. Модель у стилі BOB з ефектом washed для характерного м’якого та злегка вінтажного вигляду.",
 
-    category: "bucket",
+    category: "bucket" as const,
 
     hero: "/images/headwear/bucket-olive-1-hand.jpg",
 
