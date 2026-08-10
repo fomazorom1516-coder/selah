@@ -8,44 +8,191 @@ import { motion } from "framer-motion";
 import { headwear } from "./data/headwear";
 import ProductGallery from "@/components/headwear/ProductGallery";
 
+type Language = "uk" | "es" | "en";
+
+const translations = {
+  uk: {
+    home: "На головну",
+    title: "Головні убори",
+    description:
+      "Преміальні головні убори SELAH для щоденного життя.",
+    footer: "Носи свою віру щодня.",
+  },
+
+  es: {
+    home: "Inicio",
+    title: "Headwear",
+    description:
+      "Gorras y accesorios cristianos premium para cada día.",
+    footer: "Lleva tu fe cada día.",
+  },
+
+  en: {
+    home: "Home",
+    title: "Headwear",
+    description:
+      "Premium Christian headwear crafted for everyday life.",
+    footer: "Wear your faith every day.",
+  },
+};
+
+function getLanguage(): Language {
+  if (typeof window === "undefined") {
+    return "uk";
+  }
+
+  const saved =
+    localStorage.getItem("selah-language");
+
+  if (
+    saved === "uk" ||
+    saved === "es" ||
+    saved === "en"
+  ) {
+    return saved;
+  }
+
+  return "uk";
+}
+
 export default function HeadwearPage() {
-  const [scrollDirection, setScrollDirection] = useState<"up" | "down">("up");
+
+  const [language, setLanguage] =
+    useState<Language>("uk");
+
+  const [scrollDirection, setScrollDirection] =
+    useState<"up" | "down">("up");
+
+
+  /* =====================================================
+     LANGUAGE
+  ===================================================== */
 
   useEffect(() => {
-    let lastScrollY = window.scrollY;
 
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
+    setLanguage(getLanguage());
 
-      if (currentScrollY > lastScrollY + 5) {
-        setScrollDirection("down");
-      } else if (currentScrollY < lastScrollY - 5) {
-        setScrollDirection("up");
-      }
-
-      lastScrollY = currentScrollY;
+    const handleLanguageChange = () => {
+      setLanguage(getLanguage());
     };
 
-    window.addEventListener("scroll", handleScroll, {
-      passive: true,
-    });
+    window.addEventListener(
+      "selah-language-changed",
+      handleLanguageChange
+    );
+
+    window.addEventListener(
+      "language-changed",
+      handleLanguageChange
+    );
+
+    window.addEventListener(
+      "storage",
+      handleLanguageChange
+    );
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+
+      window.removeEventListener(
+        "selah-language-changed",
+        handleLanguageChange
+      );
+
+      window.removeEventListener(
+        "language-changed",
+        handleLanguageChange
+      );
+
+      window.removeEventListener(
+        "storage",
+        handleLanguageChange
+      );
+
     };
+
   }, []);
 
+
+  /* =====================================================
+     SCROLL
+  ===================================================== */
+
+  useEffect(() => {
+
+    let lastScrollY =
+      window.scrollY;
+
+    const handleScroll = () => {
+
+      const currentScrollY =
+        window.scrollY;
+
+      if (
+        currentScrollY >
+        lastScrollY + 5
+      ) {
+
+        setScrollDirection("down");
+
+      } else if (
+        currentScrollY <
+        lastScrollY - 5
+      ) {
+
+        setScrollDirection("up");
+
+      }
+
+      lastScrollY =
+        currentScrollY;
+
+    };
+
+    window.addEventListener(
+      "scroll",
+      handleScroll,
+      {
+        passive: true,
+      }
+    );
+
+    return () => {
+
+      window.removeEventListener(
+        "scroll",
+        handleScroll
+      );
+
+    };
+
+  }, []);
+
+
+  const t =
+    translations[language];
+
+
   return (
+
     <main className="bg-black text-white">
 
+
       {/* =====================================================
-          ПЛАВАЮЧА КНОПКА — НА ГОЛОВНУ
+          ПЛАВАЮЧА КНОПКА
       ===================================================== */}
 
       <motion.div
-        className="fixed left-5 top-5 z-[9999]"
+        className="
+          fixed
+          left-5
+          top-5
+          z-[9999]
+        "
         animate={{
-          y: scrollDirection === "down" ? 55 : 0,
+          y:
+            scrollDirection === "down"
+              ? 55
+              : 0,
         }}
         transition={{
           type: "spring",
@@ -53,7 +200,9 @@ export default function HeadwearPage() {
           damping: 22,
         }}
       >
+
         <Link href="/">
+
           <motion.div
             whileHover={{
               scale: 1.05,
@@ -81,9 +230,13 @@ export default function HeadwearPage() {
               transition
             "
           >
+
             <motion.span
               animate={{
-                x: scrollDirection === "up" ? -2 : 2,
+                x:
+                  scrollDirection === "up"
+                    ? -2
+                    : 2,
               }}
               transition={{
                 duration: 0.3,
@@ -93,22 +246,34 @@ export default function HeadwearPage() {
               ←
             </motion.span>
 
+
             <span className="hidden sm:inline">
-              На головну
+              {t.home}
             </span>
+
 
             <span className="sm:hidden">
               SELAH
             </span>
+
           </motion.div>
+
         </Link>
+
       </motion.div>
+
 
       {/* =====================================================
           HERO
       ===================================================== */}
 
-      <section className="relative h-screen overflow-hidden">
+      <section
+        className="
+          relative
+          h-screen
+          overflow-hidden
+        "
+      >
 
         <Image
           src="/images/headwear/headwear-collection.jpg"
@@ -119,11 +284,19 @@ export default function HeadwearPage() {
           sizes="100vw"
         />
 
-        {/* затемнення */}
 
-        <div className="absolute inset-0 bg-black/45" />
+        {/* DARK OVERLAY */}
 
-        {/* додатковий градієнт */}
+        <div
+          className="
+            absolute
+            inset-0
+            bg-black/45
+          "
+        />
+
+
+        {/* GRADIENT */}
 
         <div
           className="
@@ -136,9 +309,18 @@ export default function HeadwearPage() {
           "
         />
 
+
         {/* HERO CONTENT */}
 
-        <div className="absolute inset-0 flex items-center justify-center">
+        <div
+          className="
+            absolute
+            inset-0
+            flex
+            items-center
+            justify-center
+          "
+        >
 
           <motion.div
             initial={{
@@ -153,45 +335,53 @@ export default function HeadwearPage() {
               duration: 0.8,
               ease: "easeOut",
             }}
-            className="text-center px-6"
+            className="
+              px-6
+              text-center
+            "
           >
 
-            <p className="
-              uppercase
-              tracking-[8px]
-              text-zinc-300
-              text-sm
-            ">
+            <p
+              className="
+                text-sm
+                uppercase
+                tracking-[8px]
+                text-zinc-300
+              "
+            >
               SELAH
             </p>
+
 
             <h1
               className="
                 mt-4
                 text-6xl
-                md:text-8xl
                 font-bold
                 tracking-tight
+                md:text-8xl
               "
             >
-              Headwear
+              {t.title}
             </h1>
+
 
             <p
               className="
-                mt-8
-                text-lg
-                md:text-xl
-                text-zinc-300
-                max-w-xl
                 mx-auto
+                mt-8
+                max-w-xl
+                text-lg
                 leading-8
+                text-zinc-300
+                md:text-xl
               "
             >
-              Premium Christian Headwear crafted for everyday life.
+              {t.description}
             </p>
 
-            {/* маленький індикатор прокрутки */}
+
+            {/* SCROLL INDICATOR */}
 
             <motion.div
               animate={{
@@ -205,8 +395,8 @@ export default function HeadwearPage() {
               }}
               className="
                 mt-12
-                text-white/60
                 text-sm
+                text-white/60
               "
             >
               ↓
@@ -218,6 +408,7 @@ export default function HeadwearPage() {
 
       </section>
 
+
       {/* =====================================================
           PRODUCTS
       ===================================================== */}
@@ -225,24 +416,27 @@ export default function HeadwearPage() {
       <section
         id="headwear-products"
         className="
-          max-w-7xl
           mx-auto
+          max-w-7xl
           px-6
           py-24
           md:py-32
         "
       >
 
-        {headwear.map((product) => (
+        {headwear.map(
+          (product) => (
 
-          <ProductGallery
-            key={product.id}
-            product={product}
-          />
+            <ProductGallery
+              key={product.id}
+              product={product}
+            />
 
-        ))}
+          )
+        )}
 
       </section>
+
 
       {/* =====================================================
           FOOTER
@@ -259,21 +453,29 @@ export default function HeadwearPage() {
 
         <p
           className="
+            text-xs
             uppercase
             tracking-[6px]
-            text-xs
             text-zinc-600
           "
         >
           SELAH
         </p>
 
-        <p className="mt-4 text-sm text-zinc-600">
-          Носи свою віру щодня.
+
+        <p
+          className="
+            mt-4
+            text-sm
+            text-zinc-600
+          "
+        >
+          {t.footer}
         </p>
 
       </footer>
 
     </main>
+
   );
 }
