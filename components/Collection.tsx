@@ -1,24 +1,57 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
+
+type Language = "uk" | "es";
 
 export default function Collection() {
+  const [language, setLanguage] = useState<Language>("uk");
+
+  useEffect(() => {
+    const loadLanguage = () => {
+      const saved = localStorage.getItem("selah-language");
+
+      if (saved === "uk" || saved === "es") {
+        setLanguage(saved);
+      }
+    };
+
+    loadLanguage();
+
+    window.addEventListener(
+      "selah-language-changed",
+      loadLanguage
+    );
+
+    return () => {
+      window.removeEventListener(
+        "selah-language-changed",
+        loadLanguage
+      );
+    };
+  }, []);
+
+  const isUk = language === "uk";
+
   return (
     <section
       id="collection"
-      className="bg-black py-32 px-8 text-white"
+      className="bg-black px-8 py-32 text-white"
     >
       <div className="mx-auto max-w-7xl">
 
         {/* ЗАГОЛОВОК */}
+
         <h2 className="mb-20 text-center text-5xl font-light">
-          Колекція
+          {isUk ? "Колекція" : "Colección"}
         </h2>
 
         {/* КАРТКИ */}
+
         <div className="grid gap-10 md:grid-cols-3">
 
-          {/* =====================================================
-              ФУТБОЛКИ
-          ===================================================== */}
+          {/* ФУТБОЛКИ */}
 
           <Link
             href="/tshirts"
@@ -26,10 +59,10 @@ export default function Collection() {
           >
             <div
               className="
+                cursor-pointer
                 overflow-hidden
                 rounded-3xl
                 bg-zinc-900
-                cursor-pointer
                 transition-all
                 duration-500
                 hover:-translate-y-2
@@ -37,13 +70,15 @@ export default function Collection() {
               "
             >
 
-              {/* ФОТО ФУТБОЛОК */}
-
               <div className="overflow-hidden">
 
                 <img
                   src="/images/products/tshirt-01.PNG"
-                  alt="Футболки SELAH"
+                  alt={
+                    isUk
+                      ? "Футболки SELAH"
+                      : "Camisetas SELAH"
+                  }
                   className="
                     h-[420px]
                     w-full
@@ -56,16 +91,18 @@ export default function Collection() {
 
               </div>
 
-              {/* ІНФОРМАЦІЯ */}
-
               <div className="p-8">
 
                 <h3 className="mb-2 text-2xl">
-                  Футболки
+                  {isUk
+                    ? "Футболки"
+                    : "Camisetas"}
                 </h3>
 
                 <p className="text-gray-400">
-                  Мінімалізм. Вишивка. Віра.
+                  {isUk
+                    ? "Мінімалізм. Вишивка. Віра."
+                    : "Minimalismo. Bordado. Fe."}
                 </p>
 
                 <p
@@ -80,7 +117,9 @@ export default function Collection() {
                     group-hover:text-white
                   "
                 >
-                  Переглянути →
+                  {isUk
+                    ? "Переглянути →"
+                    : "Ver colección →"}
                 </p>
 
               </div>
@@ -89,9 +128,7 @@ export default function Collection() {
           </Link>
 
 
-          {/* =====================================================
-              БЕЙСБОЛКИ
-          ===================================================== */}
+          {/* БЕЙСБОЛКИ */}
 
           <Link
             href="/headwear"
@@ -100,10 +137,10 @@ export default function Collection() {
 
             <div
               className="
+                cursor-pointer
                 overflow-hidden
                 rounded-3xl
                 bg-zinc-900
-                cursor-pointer
                 transition-all
                 duration-500
                 hover:-translate-y-2
@@ -111,13 +148,15 @@ export default function Collection() {
               "
             >
 
-              {/* ФОТО БЕЙСБОЛОК */}
-
               <div className="overflow-hidden">
 
                 <img
                   src="/images/headwear/headwear-collection.jpg"
-                  alt="Колекція бейсболок SELAH"
+                  alt={
+                    isUk
+                      ? "Колекція бейсболок SELAH"
+                      : "Colección de gorras SELAH"
+                  }
                   className="
                     h-[420px]
                     w-full
@@ -130,16 +169,18 @@ export default function Collection() {
 
               </div>
 
-              {/* ІНФОРМАЦІЯ */}
-
               <div className="p-8">
 
                 <h3 className="mb-2 text-2xl">
-                  Бейсболки
+                  {isUk
+                    ? "Бейсболки"
+                    : "Gorras"}
                 </h3>
 
                 <p className="text-gray-400">
-                  Носи свою віру щодня.
+                  {isUk
+                    ? "Носи свою віру щодня."
+                    : "Lleva tu fe cada día."}
                 </p>
 
                 <p
@@ -154,7 +195,9 @@ export default function Collection() {
                     group-hover:text-white
                   "
                 >
-                  Переглянути →
+                  {isUk
+                    ? "Переглянути →"
+                    : "Ver colección →"}
                 </p>
 
               </div>
@@ -164,9 +207,7 @@ export default function Collection() {
           </Link>
 
 
-          {/* =====================================================
-              ПАТЧІ
-          ===================================================== */}
+          {/* ПАТЧІ */}
 
           <Link
             href="/patches"
@@ -175,10 +216,10 @@ export default function Collection() {
 
             <div
               className="
+                cursor-pointer
                 overflow-hidden
                 rounded-3xl
                 bg-zinc-900
-                cursor-pointer
                 transition-all
                 duration-500
                 hover:-translate-y-2
@@ -186,13 +227,15 @@ export default function Collection() {
               "
             >
 
-              {/* ФОТО ПАТЧІВ */}
-
               <div className="overflow-hidden">
 
                 <img
                   src="/images/patches/patch-todos.jpg"
-                  alt="Патчі SELAH"
+                  alt={
+                    isUk
+                      ? "Патчі SELAH"
+                      : "Parches SELAH"
+                  }
                   className="
                     h-[420px]
                     w-full
@@ -205,16 +248,18 @@ export default function Collection() {
 
               </div>
 
-              {/* ІНФОРМАЦІЯ */}
-
               <div className="p-8">
 
                 <h3 className="mb-2 text-2xl">
-                  Патчі
+                  {isUk
+                    ? "Патчі"
+                    : "Parches"}
                 </h3>
 
                 <p className="text-gray-400">
-                  Змінюй послання разом із днем.
+                  {isUk
+                    ? "Змінюй послання разом із днем."
+                    : "Cambia el mensaje con cada día."}
                 </p>
 
                 <p
@@ -229,7 +274,9 @@ export default function Collection() {
                     group-hover:text-white
                   "
                 >
-                  Переглянути →
+                  {isUk
+                    ? "Переглянути →"
+                    : "Ver colección →"}
                 </p>
 
               </div>
