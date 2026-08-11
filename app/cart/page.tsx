@@ -3,10 +3,14 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+type Language = "uk" | "es";
+
 type CartItem = {
   id: string;
-  type: "tshirt" | "patch" | "headwear";
-  title: string;
+  type?: "tshirt" | "patch" | "headwear";
+  category?: "tshirt" | "patch" | "headwear";
+  title?: string;
+  name?: string;
   image: string;
   price: number;
   color?: string;
@@ -15,17 +19,243 @@ type CartItem = {
   quantity: number;
 };
 
-export default function CartPage() {
-  const [items, setItems] = useState<CartItem[]>([]);
+const translations = {
+  uk: {
+    cart: "Кошик",
+    itemsInCart: "у кошику",
+    item: "товар",
+    items: "товари",
+    emptyTitle: "Ваш кошик поки порожній.",
+    emptyDescription:
+      "Оберіть футболку, патч або головний убір, щоб створити свій власний образ SELAH.",
+    goToTshirts: "Перейти до футболок →",
+    tshirt: "Футболка",
+    patch: "Патч",
+    headwear: "Головний убір",
+    color: "Колір",
+    size: "Розмір",
+    remove: "Видалити",
+    summary: "Підсумок",
+    products: "Товари",
+    total: "Разом",
+    checkout: "Оформити замовлення",
+    continue: "← Продовжити покупки",
+  },
 
-  // =========================================================
-  // LOAD CART
-  // =========================================================
+  es: {
+    cart: "Carrito",
+    itemsInCart: "en el carrito",
+    item: "producto",
+    items: "productos",
+    emptyTitle: "Tu carrito está vacío.",
+    emptyDescription:
+      "Elige una camiseta, un parche o un accesorio para crear tu propio estilo SELAH.",
+    goToTshirts: "Ir a camisetas →",
+    tshirt: "Camiseta",
+    patch: "Parche",
+    headwear: "Gorra / sombrero",
+    color: "Color",
+    size: "Talla",
+    remove: "Eliminar",
+    summary: "Resumen",
+    products: "Productos",
+    total: "Total",
+    checkout: "Realizar pedido",
+    continue: "← Continuar comprando",
+  },
+};
+
+/* =========================================================
+   LANGUAGE
+========================================================= */
+
+function getLanguage(): Language {
+  if (typeof window === "undefined") {
+    return "uk";
+  }
+
+  const saved = localStorage.getItem("selah-language");
+
+  if (saved === "uk" || saved === "es") {
+    return saved;
+  }
+
+  return "uk";
+}
+
+/* =========================================================
+   HEADWEAR TRANSLATIONS
+========================================================= */
+
+const headwearTranslations: Record<
+  string,
+  {
+    uk: string;
+    es: string;
+  }
+> = {
+  classic: {
+    uk: "Класична бейсболка",
+    es: "Gorra clásica",
+  },
+
+  performance: {
+    uk: "Спортивна бейсболка",
+    es: "Gorra deportiva",
+  },
+
+  trucker: {
+    uk: "Бейсболка Trucker",
+    es: "Gorra Trucker",
+  },
+
+  bucket: {
+    uk: "Панама",
+    es: "Sombrero Bucket",
+  },
+};
+
+/* =========================================================
+   PRODUCT NAME
+========================================================= */
+
+function getLocalizedProductName(
+  item: CartItem,
+  language: Language
+) {
+  const rawId = item.id;
+
+  if (rawId.startsWith("headwear-")) {
+    const productId = rawId
+      .replace("headwear-", "")
+      .split("-")[0];
+
+    const translation =
+      headwearTranslations[productId];
+
+    if (translation) {
+      return translation[language];
+    }
+  }
+
+  if (item.name) {
+    return item.name;
+  }
+
+  if (item.title) {
+    return item.title;
+  }
+
+  return "";
+}
+
+/* =========================================================
+   PRODUCT TYPE
+========================================================= */
+
+function getProductType(
+  item: CartItem,
+  language: Language
+) {
+  const type = item.type || item.category;
+  const t = translations[language];
+
+  if (type === "tshirt") {
+    return t.tshirt;
+  }
+
+  if (type === "patch") {
+    return t.patch;
+  }
+
+  return t.headwear;
+}
+
+/* =========================================================
+   COMPONENT
+========================================================= */
+
+export default function CartPage() {
+  const [items, setItems] =
+    useState<CartItem[]>([]);
+
+  const [language, setLanguage] =
+    useState<Language>("uk");
+
+  /* =======================================================
+     LANGUAGE SYNC
+  ======================================================= */
+
+  useEffect(() => {
+    const updateLanguage = () => {
+      const current = getLanguage();
+      setLanguage(current);
+    };
+
+    // Initial language
+    updateLanguage();
+
+    // Custom event from Navbar
+    window.addEventListener(
+      "selah-language-changed",
+      updateLanguage
+    );
+
+    // Additional language event
+    window.addEventListener(
+      "language-changed",
+      updateLanguage
+    );
+
+    // Browser storage event
+    window.addEventListener(
+      "storage",
+      updateLanguage
+    );
+
+    /*
+      Extra safety for mobile browsers.
+      Checks localStorage periodically in case
+      the browser does not immediately deliver
+      the custom event.
+    */
+    const interval =
+      window.setInterval(
+        updateLanguage,
+        300
+      );
+
+    return () => {
+      window.removeEventListener(
+        "selah-language-changed",
+        updateLanguage
+      );
+
+      window.removeEventListener(
+        "language-changed",
+        updateLanguage
+      );
+
+      window.removeEventListener(
+        "storage",
+        updateLanguage
+      );
+
+      window.clearInterval(interval);
+    };
+  }, []);
+
+  const t = translations[language];
+
+  /* =======================================================
+     LOAD CART
+  ======================================================= */
 
   useEffect(() => {
     const loadCart = () => {
       try {
-        const saved = localStorage.getItem("selah-cart");
+        const saved =
+          localStorage.getItem("selah-cart");
 
         if (!saved) {
           setItems([]);
@@ -47,18 +277,26 @@ export default function CartPage() {
 
     loadCart();
 
-    window.addEventListener("selah-cart-updated", loadCart);
+    window.addEventListener(
+      "selah-cart-updated",
+      loadCart
+    );
 
     return () => {
-      window.removeEventListener("selah-cart-updated", loadCart);
+      window.removeEventListener(
+        "selah-cart-updated",
+        loadCart
+      );
     };
   }, []);
 
-  // =========================================================
-  // SAVE CART
-  // =========================================================
+  /* =======================================================
+     SAVE CART
+  ======================================================= */
 
-  const saveCart = (newItems: CartItem[]) => {
+  const saveCart = (
+    newItems: CartItem[]
+  ) => {
     setItems(newItems);
 
     localStorage.setItem(
@@ -66,32 +304,33 @@ export default function CartPage() {
       JSON.stringify(newItems)
     );
 
-    // повідомляємо FloatingCart
     window.dispatchEvent(
       new Event("selah-cart-updated")
     );
   };
 
-  // =========================================================
-  // INCREASE
-  // =========================================================
+  /* =======================================================
+     INCREASE
+  ======================================================= */
 
   const increase = (id: string) => {
-    const newItems = items.map((item) =>
-      item.id === id
-        ? {
-            ...item,
-            quantity: item.quantity + 1,
-          }
-        : item
+    const newItems = items.map(
+      (item) =>
+        item.id === id
+          ? {
+              ...item,
+              quantity:
+                item.quantity + 1,
+            }
+          : item
     );
 
     saveCart(newItems);
   };
 
-  // =========================================================
-  // DECREASE
-  // =========================================================
+  /* =======================================================
+     DECREASE
+  ======================================================= */
 
   const decrease = (id: string) => {
     const newItems = items
@@ -99,18 +338,21 @@ export default function CartPage() {
         item.id === id
           ? {
               ...item,
-              quantity: item.quantity - 1,
+              quantity:
+                item.quantity - 1,
             }
           : item
       )
-      .filter((item) => item.quantity > 0);
+      .filter(
+        (item) => item.quantity > 0
+      );
 
     saveCart(newItems);
   };
 
-  // =========================================================
-  // REMOVE
-  // =========================================================
+  /* =======================================================
+     REMOVE
+  ======================================================= */
 
   const remove = (id: string) => {
     const newItems = items.filter(
@@ -120,30 +362,40 @@ export default function CartPage() {
     saveCart(newItems);
   };
 
-  // =========================================================
-  // TOTAL
-  // =========================================================
+  /* =======================================================
+     TOTAL
+  ======================================================= */
 
   const total = items.reduce(
     (sum, item) =>
-      sum + item.price * item.quantity,
+      sum +
+      item.price *
+        item.quantity,
     0
   );
 
   const quantity = items.reduce(
     (sum, item) =>
-      sum + item.quantity,
+      sum +
+      item.quantity,
     0
   );
+
+  const quantityLabel =
+    quantity === 1
+      ? t.item
+      : t.items;
+
+  /* =======================================================
+     RETURN
+  ======================================================= */
 
   return (
     <main className="min-h-screen bg-black px-6 py-16 text-white">
 
       <div className="mx-auto max-w-5xl">
 
-        {/* =================================================
-            HEADER
-        ================================================= */}
+        {/* HEADER */}
 
         <div className="mb-12">
 
@@ -152,25 +404,20 @@ export default function CartPage() {
           </p>
 
           <h1 className="mt-4 text-5xl font-light">
-            Кошик
+            {t.cart}
           </h1>
 
           {items.length > 0 && (
             <p className="mt-4 text-sm text-white/40">
               {quantity}{" "}
-              {quantity === 1
-                ? "товар"
-                : "товари"}{" "}
-              у кошику
+              {quantityLabel}{" "}
+              {t.itemsInCart}
             </p>
           )}
 
         </div>
 
-
-        {/* =================================================
-            EMPTY CART
-        ================================================= */}
+        {/* EMPTY CART */}
 
         {items.length === 0 ? (
 
@@ -181,199 +428,197 @@ export default function CartPage() {
             </div>
 
             <p className="mt-7 text-xl text-white/70">
-              Ваш кошик поки порожній.
+              {t.emptyTitle}
             </p>
 
             <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-white/40">
-              Оберіть футболку, патч або головний убір,
-              щоб створити свій власний образ SELAH.
+              {t.emptyDescription}
             </p>
 
             <Link
               href="/tshirts"
               className="mt-8 inline-flex rounded-full bg-white px-8 py-4 text-sm uppercase tracking-[0.2em] text-black transition hover:scale-[1.02]"
             >
-              Перейти до футболок →
+              {t.goToTshirts}
             </Link>
 
           </div>
 
         ) : (
 
-          /* =================================================
-             CART
-          ================================================= */
-
           <div className="grid gap-10 lg:grid-cols-[1fr_350px]">
 
-            {/* =================================================
-                ITEMS
-            ================================================= */}
+            {/* ITEMS */}
 
             <div className="space-y-4">
 
-              {items.map((item) => (
+              {items.map((item) => {
 
-                <div
-                  key={item.id}
-                  className="
-                    flex
-                    gap-5
-                    rounded-3xl
-                    border
-                    border-white/10
-                    bg-white/[0.03]
-                    p-5
-                  "
-                >
+                const productName =
+                  getLocalizedProductName(
+                    item,
+                    language
+                  );
 
-                  {/* IMAGE */}
+                return (
 
-                  <div className="h-28 w-24 shrink-0 overflow-hidden rounded-2xl bg-zinc-900">
+                  <div
+                    key={item.id}
+                    className="
+                      flex
+                      gap-5
+                      rounded-3xl
+                      border
+                      border-white/10
+                      bg-white/[0.03]
+                      p-5
+                    "
+                  >
 
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="h-full w-full object-cover"
-                    />
+                    {/* IMAGE */}
 
-                  </div>
+                    <div className="h-28 w-24 shrink-0 overflow-hidden rounded-2xl bg-zinc-900">
 
+                      <img
+                        src={item.image}
+                        alt={productName}
+                        className="h-full w-full object-cover"
+                      />
 
-                  {/* INFO */}
+                    </div>
 
-                  <div className="flex min-w-0 flex-1 flex-col">
+                    {/* INFO */}
 
-                    <div className="flex justify-between gap-4">
+                    <div className="flex min-w-0 flex-1 flex-col">
 
-                      <div>
+                      <div className="flex justify-between gap-4">
 
-                        <p className="mb-1 text-[10px] uppercase tracking-[0.2em] text-white/30">
-                          {item.type === "tshirt"
-                            ? "Футболка"
-                            : item.type === "patch"
-                            ? "Патч"
-                            : "Головний убір"}
+                        <div>
+
+                          <p className="mb-1 text-[10px] uppercase tracking-[0.2em] text-white/30">
+                            {getProductType(
+                              item,
+                              language
+                            )}
+                          </p>
+
+                          <h2 className="text-lg">
+                            {productName}
+                          </h2>
+
+                          {item.reference && (
+                            <p className="mt-1 text-xs text-white/30">
+                              {item.reference}
+                            </p>
+                          )}
+
+                          {item.color && (
+                            <p className="mt-2 text-sm text-white/40">
+                              {t.color}:{" "}
+                              {item.color}
+                            </p>
+                          )}
+
+                          {item.size && (
+                            <p className="text-sm text-white/40">
+                              {t.size}:{" "}
+                              {item.size}
+                            </p>
+                          )}
+
+                        </div>
+
+                        {/* REMOVE */}
+
+                        <button
+                          type="button"
+                          onClick={() =>
+                            remove(item.id)
+                          }
+                          className="
+                            shrink-0
+                            text-xs
+                            text-white/30
+                            transition
+                            hover:text-white
+                          "
+                        >
+                          {t.remove}
+                        </button>
+
+                      </div>
+
+                      {/* BOTTOM */}
+
+                      <div className="mt-auto flex items-end justify-between pt-5">
+
+                        {/* QUANTITY */}
+
+                        <div className="flex items-center rounded-full border border-white/15">
+
+                          <button
+                            type="button"
+                            onClick={() =>
+                              decrease(item.id)
+                            }
+                            className="
+                              px-4
+                              py-2
+                              text-white/60
+                              transition
+                              hover:text-white
+                            "
+                          >
+                            −
+                          </button>
+
+                          <span className="min-w-8 text-center text-sm">
+                            {item.quantity}
+                          </span>
+
+                          <button
+                            type="button"
+                            onClick={() =>
+                              increase(item.id)
+                            }
+                            className="
+                              px-4
+                              py-2
+                              text-white/60
+                              transition
+                              hover:text-white
+                            "
+                          >
+                            +
+                          </button>
+
+                        </div>
+
+                        {/* PRICE */}
+
+                        <p className="text-lg">
+                          {(item.price *
+                            item.quantity)
+                            .toFixed(2)
+                            .replace(
+                              ".",
+                              ","
+                            )}{" "}
+                          €
                         </p>
 
-                        <h2 className="text-lg">
-                          {item.title}
-                        </h2>
-
-                        {item.reference && (
-                          <p className="mt-1 text-xs text-white/30">
-                            {item.reference}
-                          </p>
-                        )}
-
-                        {item.color && (
-                          <p className="mt-2 text-sm text-white/40">
-                            Колір: {item.color}
-                          </p>
-                        )}
-
-                        {item.size && (
-                          <p className="text-sm text-white/40">
-                            Розмір: {item.size}
-                          </p>
-                        )}
-
                       </div>
-
-
-                      {/* REMOVE */}
-
-                      <button
-                        type="button"
-                        onClick={() =>
-                          remove(item.id)
-                        }
-                        className="
-                          shrink-0
-                          text-xs
-                          text-white/30
-                          transition
-                          hover:text-white
-                        "
-                      >
-                        Видалити
-                      </button>
-
-                    </div>
-
-
-                    {/* BOTTOM */}
-
-                    <div className="mt-auto flex items-end justify-between pt-5">
-
-                      {/* QUANTITY */}
-
-                      <div className="flex items-center rounded-full border border-white/15">
-
-                        <button
-                          type="button"
-                          onClick={() =>
-                            decrease(item.id)
-                          }
-                          className="
-                            px-4
-                            py-2
-                            text-white/60
-                            transition
-                            hover:text-white
-                          "
-                        >
-                          −
-                        </button>
-
-                        <span className="min-w-8 text-center text-sm">
-                          {item.quantity}
-                        </span>
-
-                        <button
-                          type="button"
-                          onClick={() =>
-                            increase(item.id)
-                          }
-                          className="
-                            px-4
-                            py-2
-                            text-white/60
-                            transition
-                            hover:text-white
-                          "
-                        >
-                          +
-                        </button>
-
-                      </div>
-
-
-                      {/* PRICE */}
-
-                      <p className="text-lg">
-
-                        {(item.price * item.quantity)
-                          .toFixed(2)
-                          .replace(".", ",")}{" "}
-                        €
-
-                      </p>
 
                     </div>
 
                   </div>
 
-                </div>
-
-              ))}
+                );
+              })}
 
             </div>
 
-
-            {/* =================================================
-                SUMMARY
-            ================================================= */}
+            {/* SUMMARY */}
 
             <div
               className="
@@ -389,47 +634,44 @@ export default function CartPage() {
             >
 
               <h2 className="text-xl">
-                Підсумок
+                {t.summary}
               </h2>
-
-
-              {/* ITEMS */}
 
               <div className="mt-7 flex justify-between border-b border-white/10 pb-5 text-sm">
 
                 <span className="text-white/40">
-                  Товари ({quantity})
+                  {t.products} ({quantity})
                 </span>
 
                 <span>
                   {total
                     .toFixed(2)
-                    .replace(".", ",")}{" "}
+                    .replace(
+                      ".",
+                      ","
+                    )}{" "}
                   €
                 </span>
 
               </div>
 
-
-              {/* TOTAL */}
-
               <div className="mt-5 flex items-end justify-between">
 
                 <span className="text-white/50">
-                  Разом
+                  {t.total}
                 </span>
 
                 <span className="text-3xl font-light">
                   {total
                     .toFixed(2)
-                    .replace(".", ",")}{" "}
+                    .replace(
+                      ".",
+                      ","
+                    )}{" "}
                   €
                 </span>
 
               </div>
-
-
-              {/* CHECKOUT */}
 
               <button
                 type="button"
@@ -449,11 +691,8 @@ export default function CartPage() {
                   hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]
                 "
               >
-                Оформити замовлення
+                {t.checkout}
               </button>
-
-
-              {/* CONTINUE */}
 
               <Link
                 href="/tshirts"
@@ -467,7 +706,7 @@ export default function CartPage() {
                   hover:text-white
                 "
               >
-                ← Продовжити покупки
+                {t.continue}
               </Link>
 
             </div>

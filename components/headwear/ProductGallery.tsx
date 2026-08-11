@@ -37,12 +37,9 @@ const translations = {
     material: "Матеріал",
     price: "Ціна",
     color: "Колір",
-
     chooseCap: "Обрати бейсболку →",
     chooseBucket: "Обрати панаму →",
-
     daily: "SELAH — носи свою віру щодня.",
-
     cap: "бейсболку",
     bucket: "панаму",
   },
@@ -51,12 +48,9 @@ const translations = {
     material: "Material",
     price: "Precio",
     color: "Color",
-
     chooseCap: "Elegir gorra →",
     chooseBucket: "Elegir sombrero →",
-
     daily: "SELAH — lleva tu fe cada día.",
-
     cap: "gorra",
     bucket: "sombrero",
   },
@@ -84,114 +78,73 @@ const productTranslations: Record<
     };
   }
 > = {
-
-  /*
-  =======================================================
-  CLASSIC
-  =======================================================
-  */
-
   classic: {
     uk: {
       name: "Класична бейсболка",
-
       description:
         "Класична шестипанельна бейсболка SELAH із преміальною вишивкою для щоденного використання.",
-
       material:
         "Модель Clique Daris — конструкція Sandwich, контрастний козирок та регульована застібка.",
     },
 
     es: {
       name: "Gorra clásica",
-
       description:
         "Gorra clásica de seis paneles SELAH con bordado premium, creada para el uso diario.",
-
       material:
         "Modelo Clique Daris — construcción Sandwich, visera de contraste y cierre ajustable.",
     },
   },
 
-  /*
-  =======================================================
-  PERFORMANCE
-  =======================================================
-  */
-
   performance: {
     uk: {
       name: "Спортивна бейсболка",
-
       description:
         "Легка спортивна бейсболка SELAH із вентиляцією, створена для активного способу життя та спекотної погоди.",
-
       material:
         "Модель Eagle із задньою перфорованою панеллю для відмінної вентиляції.",
     },
 
     es: {
       name: "Gorra deportiva",
-
       description:
         "Gorra deportiva ligera SELAH con ventilación, diseñada para un estilo de vida activo y los días calurosos.",
-
       material:
         "Modelo Eagle con panel trasero perforado para una excelente ventilación.",
     },
   },
 
-  /*
-  =======================================================
-  TRUCKER
-  =======================================================
-  */
-
   trucker: {
     uk: {
       name: "Бейсболка Trucker",
-
       description:
         "Класична бейсболка Trucker із сіткою для кращої вентиляції та преміальною передньою панеллю SELAH.",
-
       material:
         "Саржа з чесаної бавовни. Задня частина виготовлена з поліестерової сітки для кращої вентиляції.",
     },
 
     es: {
       name: "Gorra Trucker",
-
       description:
         "Gorra Trucker clásica con panel trasero de malla para una mejor ventilación y panel frontal premium SELAH.",
-
       material:
         "Sarga de algodón peinado. La parte trasera está fabricada con malla de poliéster para una mejor ventilación.",
     },
   },
 
-  /*
-  =======================================================
-  BUCKET
-  =======================================================
-  */
-
   bucket: {
     uk: {
       name: "Панама",
-
       description:
         "Стильна панама SELAH із вишитим логотипом та змінним патчем для повсякденного носіння.",
-
       material:
         "100% бавовна. Модель у стилі BOB з ефектом washed для характерного м’якого та злегка вінтажного вигляду.",
     },
 
     es: {
       name: "Sombrero Bucket",
-
       description:
         "Bucket hat elegante SELAH con logotipo bordado y parche intercambiable para el uso diario.",
-
       material:
         "100% algodón. Modelo estilo BOB con efecto washed para conseguir un tacto suave y un aspecto ligeramente vintage.",
     },
@@ -248,13 +201,34 @@ function getColorTranslation(
     return "Oliva";
   }
 
-  if (
-    normalized.includes("celeste")
-  ) {
+  if (normalized.includes("celeste")) {
     return "Celeste";
   }
 
   return colorName;
+}
+
+/*
+=========================================================
+CHECK DARK COLOR
+=========================================================
+*/
+
+function isDarkColor(color: string) {
+  const hex = color.replace("#", "");
+
+  if (hex.length !== 6) {
+    return false;
+  }
+
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+
+  const brightness =
+    (r * 299 + g * 587 + b * 114) / 1000;
+
+  return brightness < 80;
 }
 
 /*
@@ -314,7 +288,6 @@ COMPONENT
 export default function ProductGallery({
   product,
 }: Props) {
-
   const [currentImage, setCurrentImage] =
     useState(0);
 
@@ -331,7 +304,6 @@ export default function ProductGallery({
   */
 
   useEffect(() => {
-
     const updateLanguage = () => {
       setLanguage(getLanguage());
     };
@@ -354,7 +326,6 @@ export default function ProductGallery({
     );
 
     return () => {
-
       window.removeEventListener(
         "selah-language-changed",
         updateLanguage
@@ -369,9 +340,7 @@ export default function ProductGallery({
         "storage",
         updateLanguage
       );
-
     };
-
   }, []);
 
   /*
@@ -393,6 +362,9 @@ export default function ProductGallery({
     product.colors[0]?.value ||
     "#ffffff";
 
+  const darkProduct =
+    isDarkColor(glowColor);
+
   const isBucket =
     product.category === "bucket";
 
@@ -408,23 +380,19 @@ export default function ProductGallery({
   */
 
   const nextImage = () => {
-
     setCurrentImage((prev) =>
       prev === product.gallery.length - 1
         ? 0
         : prev + 1
     );
-
   };
 
   const prevImage = () => {
-
     setCurrentImage((prev) =>
       prev === 0
         ? product.gallery.length - 1
         : prev - 1
     );
-
   };
 
   /*
@@ -434,9 +402,7 @@ export default function ProductGallery({
   */
 
   const addToCart = () => {
-
     try {
-
       const saved =
         localStorage.getItem(
           "selah-cart"
@@ -448,7 +414,6 @@ export default function ProductGallery({
           : [];
 
       const newItem: CartItem = {
-
         id:
           `headwear-${product.id}-${Date.now()}`,
 
@@ -480,16 +445,12 @@ export default function ProductGallery({
           "selah-cart-updated"
         )
       );
-
     } catch (error) {
-
       console.error(
         "Не вдалося додати товар у кошик:",
         error
       );
-
     }
-
   };
 
   /*
@@ -499,7 +460,6 @@ export default function ProductGallery({
   */
 
   return (
-
     <section
       className="
         relative
@@ -711,7 +671,6 @@ export default function ProductGallery({
                 currentImage === index;
 
               return (
-
                 <motion.button
                   key={index}
                   type="button"
@@ -759,9 +718,7 @@ export default function ProductGallery({
                   />
 
                 </motion.button>
-
               );
-
             }
           )}
 
@@ -894,7 +851,6 @@ export default function ProductGallery({
         ================================================= */}
 
         {localizedProduct.material && (
-
           <div
             className="
               mt-7
@@ -926,7 +882,6 @@ export default function ProductGallery({
             </p>
 
           </div>
-
         )}
 
         {/* =================================================
@@ -1012,54 +967,67 @@ export default function ProductGallery({
           >
 
             {product.colors.map(
-              (color) => (
+              (color) => {
 
-                <motion.div
-                  key={color.name}
-                  whileHover={{
-                    scale: 1.12,
-                  }}
-                  className="
-                    flex
-                    items-center
-                    gap-3
-                  "
-                >
+                const darkColor =
+                  isDarkColor(
+                    color.value
+                  );
 
-                  <span
-                    className="
-                      relative
-                      block
-                      h-11
-                      w-11
-                      rounded-full
-                      border-2
-                      border-white/20
-                    "
-                    style={{
-                      background:
-                        color.value,
-
-                      boxShadow:
-                        `0 0 25px ${color.value}70`,
+                return (
+                  <motion.div
+                    key={color.name}
+                    whileHover={{
+                      scale: 1.08,
                     }}
-                  />
-
-                  <span
                     className="
-                      text-sm
-                      text-zinc-300
+                      flex
+                      items-center
+                      gap-3
                     "
                   >
-                    {getColorTranslation(
-                      color.name,
-                      language
-                    )}
-                  </span>
 
-                </motion.div>
+                    {/* COLOR CIRCLE */}
 
-              )
+                    <span
+                      className="
+                        relative
+                        block
+                        h-11
+                        w-11
+                        rounded-full
+                      "
+                      style={{
+                        background:
+                          color.value,
+
+                        border:
+                          darkColor
+                            ? "3px solid rgba(255,255,255,0.45)"
+                            : "2px solid rgba(255,255,255,0.25)",
+
+                        boxShadow:
+                          darkColor
+                            ? "0 0 0 4px rgba(255,255,255,0.06), 0 0 22px rgba(255,255,255,0.18)"
+                            : `0 0 25px ${color.value}70`,
+                      }}
+                    />
+
+                    <span
+                      className="
+                        text-sm
+                        text-zinc-300
+                      "
+                    >
+                      {getColorTranslation(
+                        color.name,
+                        language
+                      )}
+                    </span>
+
+                  </motion.div>
+                );
+              }
             )}
 
           </div>
@@ -1087,15 +1055,23 @@ export default function ProductGallery({
             px-9
             py-4
             font-medium
-            text-black
             sm:w-auto
           "
           style={{
             background:
-              glowColor,
+              darkProduct
+                ? "#ffffff"
+                : glowColor,
+
+            color:
+              darkProduct
+                ? "#000000"
+                : "#000000",
 
             boxShadow:
-              `0 0 30px ${glowColor}45`,
+              darkProduct
+                ? "0 0 30px rgba(255,255,255,0.20)"
+                : `0 0 30px ${glowColor}45`,
           }}
         >
           {chooseButton}
