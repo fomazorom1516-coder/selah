@@ -13,11 +13,7 @@ export default function Navbar() {
     const updateLanguage = () => {
       const saved = localStorage.getItem("selah-language");
 
-      if (saved === "uk" || saved === "es") {
-        setLanguage(saved);
-      } else {
-        setLanguage("uk");
-      }
+      setLanguage(saved === "es" ? "es" : "uk");
     };
 
     updateLanguage();
@@ -27,8 +23,14 @@ export default function Navbar() {
     window.addEventListener("storage", updateLanguage);
 
     return () => {
-      window.removeEventListener("selah-language-changed", updateLanguage);
-      window.removeEventListener("language-changed", updateLanguage);
+      window.removeEventListener(
+        "selah-language-changed",
+        updateLanguage
+      );
+      window.removeEventListener(
+        "language-changed",
+        updateLanguage
+      );
       window.removeEventListener("storage", updateLanguage);
     };
   }, []);
@@ -39,235 +41,327 @@ export default function Navbar() {
     window.dispatchEvent(new Event("selah-language-changed"));
   };
 
+  const isUk = language === "uk";
+
   return (
-    <>
-      <header className="fixed left-0 right-0 top-0 z-[1000] border-b border-white/10 bg-black/80 backdrop-blur-xl">
-        <div className="mx-auto flex h-20 max-w-7xl items-center px-3 sm:px-6 md:px-4 lg:px-6">
+    <header className="fixed left-0 right-0 top-0 z-[1000] border-b border-white/10 bg-black/80 backdrop-blur-xl">
 
-          {/* LOGO */}
+      <div className="selah-navbar-inner mx-auto flex h-20 max-w-7xl items-center px-3 sm:px-6">
 
-          <Link
-            href="/"
-            className="shrink-0 text-sm font-medium uppercase tracking-[0.35em] transition hover:text-white/60"
-          >
-            SELAH
+        {/* LOGO */}
+
+        <Link
+          href="/"
+          className="selah-logo shrink-0 text-sm font-medium uppercase tracking-[0.35em] transition hover:text-white/60"
+        >
+          SELAH
+        </Link>
+
+        {/* MENU */}
+
+        <nav className="selah-menu flex items-center">
+
+          <Link href="/" className="selah-menu-link">
+            {isUk ? "Головна" : "Inicio"}
           </Link>
 
-          {/* NAVIGATION */}
+          <Link href="/tshirts" className="selah-menu-link">
+            {isUk ? "Футболки" : "Camisetas"}
+          </Link>
 
-          <nav className="selah-nav ml-auto mr-2 flex items-center gap-3 lg:mr-4 lg:gap-8">
+          <Link href="/patches" className="selah-menu-link">
+            {isUk ? "Патчі" : "Parches"}
+          </Link>
 
-            <Link
-              href="/"
-              className="whitespace-nowrap text-[11px] text-white/60 transition hover:text-white lg:text-sm"
+          <Link href="/headwear" className="selah-menu-link">
+            {isUk ? "Головні убори" : "Gorras"}
+          </Link>
+
+        </nav>
+
+        {/* RIGHT */}
+
+        <div className="selah-right flex shrink-0 items-center">
+
+          {/* CONTACTS */}
+
+          <div className="relative">
+
+            <button
+              type="button"
+              onClick={() => setContactsOpen((v) => !v)}
+              aria-label={isUk ? "Контакти" : "Contacto"}
+              className="selah-contact flex items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-white/60 transition hover:border-white/40 hover:bg-white/10 hover:text-white"
             >
-              {language === "uk" ? "Головна" : "Inicio"}
-            </Link>
+              {isUk ? "Контакти" : "Contacto"}
+            </button>
 
-            <Link
-              href="/tshirts"
-              className="whitespace-nowrap text-[11px] text-white/60 transition hover:text-white lg:text-sm"
-            >
-              {language === "uk" ? "Футболки" : "Camisetas"}
-            </Link>
+            {contactsOpen && (
+              <div className="absolute right-0 top-12 w-[calc(100vw-32px)] max-w-72 rounded-2xl border border-white/10 bg-black p-5 shadow-2xl">
 
-            <Link
-              href="/patches"
-              className="whitespace-nowrap text-[11px] text-white/60 transition hover:text-white lg:text-sm"
-            >
-              {language === "uk" ? "Патчі" : "Parches"}
-            </Link>
+                <p className="text-xs uppercase tracking-[0.3em] text-white/40">
+                  SELAH
+                </p>
 
-            <Link
-              href="/headwear"
-              className="whitespace-nowrap text-[11px] text-white/60 transition hover:text-white lg:text-sm"
-            >
-              {language === "uk" ? "Головні убори" : "Gorras"}
-            </Link>
+                <h3 className="mt-3 text-lg text-white">
+                  {isUk ? "Контакти" : "Contacto"}
+                </h3>
 
-          </nav>
-
-          {/* RIGHT SIDE */}
-
-          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-
-            {/* CONTACTS */}
-
-            <div className="relative">
-
-              <button
-                type="button"
-                onClick={() => setContactsOpen(!contactsOpen)}
-                aria-label={language === "uk" ? "Контакти" : "Contacto"}
-                className="flex h-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] px-3 text-xs text-white/60 transition hover:border-white/40 hover:bg-white/10 hover:text-white sm:px-4"
-              >
-                <span className="selah-contact-label">
-                  {language === "uk" ? "Контакти" : "Contacto"}
-                </span>
-
-                <span className="selah-contact-icon">
-                  ☎
-                </span>
-              </button>
-
-              {/* CONTACT PANEL */}
-
-              {contactsOpen && (
-                <div className="absolute right-0 top-12 w-[calc(100vw-32px)] max-w-72 rounded-2xl border border-white/10 bg-black p-5 shadow-2xl">
-
-                  <p className="text-xs uppercase tracking-[0.3em] text-white/40">
-                    SELAH
+                <a
+                  href="tel:+34641136326"
+                  className="mt-5 block rounded-xl border border-white/10 bg-white/[0.03] p-3"
+                >
+                  <p className="text-xs text-white/40">
+                    {isUk ? "Телефон" : "Teléfono"}
                   </p>
 
-                  <h3 className="mt-3 text-lg text-white">
-                    {language === "uk" ? "Контакти" : "Contacto"}
-                  </h3>
+                  <p className="mt-1 text-sm text-white">
+                    +34 641 136 326
+                  </p>
+                </a>
 
-                  <a
-                    href="tel:+34641136326"
-                    className="mt-5 block rounded-xl border border-white/10 bg-white/[0.03] p-3 hover:border-white/30 hover:bg-white/[0.07]"
-                  >
-                    <p className="text-xs text-white/40">
-                      {language === "uk" ? "Телефон" : "Teléfono"}
-                    </p>
+                <a
+                  href="mailto:fomazorom1516@icloud.com"
+                  className="mt-3 block rounded-xl border border-white/10 bg-white/[0.03] p-3"
+                >
+                  <p className="text-xs text-white/40">
+                    Email
+                  </p>
 
-                    <p className="mt-1 text-sm text-white">
-                      +34 641 136 326
-                    </p>
-                  </a>
+                  <p className="mt-1 break-all text-sm text-white">
+                    fomazorom1516@icloud.com
+                  </p>
+                </a>
 
-                  <a
-                    href="mailto:fomazorom1516@icloud.com"
-                    className="mt-3 block rounded-xl border border-white/10 bg-white/[0.03] p-3 hover:border-white/30 hover:bg-white/[0.07]"
-                  >
-                    <p className="text-xs text-white/40">
-                      Email
-                    </p>
-
-                    <p className="mt-1 break-all text-sm text-white">
-                      fomazorom1516@icloud.com
-                    </p>
-                  </a>
-
-                </div>
-              )}
-
-            </div>
-
-            {/* LANGUAGE */}
-
-            <div className="flex shrink-0 rounded-full border border-white/10 bg-white/[0.03] p-1">
-
-              <button
-                type="button"
-                onClick={() => changeLanguage("uk")}
-                className={`rounded-full px-2.5 py-1.5 text-[10px] transition sm:px-3 ${
-                  language === "uk"
-                    ? "bg-white text-black"
-                    : "text-white/40 hover:text-white"
-                }`}
-              >
-                UA
-              </button>
-
-              <button
-                type="button"
-                onClick={() => changeLanguage("es")}
-                className={`rounded-full px-2.5 py-1.5 text-[10px] transition sm:px-3 ${
-                  language === "es"
-                    ? "bg-white text-black"
-                    : "text-white/40 hover:text-white"
-                }`}
-              >
-                ES
-              </button>
-
-            </div>
-
-            {/* CART */}
-
-            <Link
-              href="/cart"
-              aria-label={language === "uk" ? "Кошик" : "Carrito"}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-lg transition hover:border-white/40 hover:bg-white/10"
-            >
-              🛒
-            </Link>
+              </div>
+            )}
 
           </div>
 
-        </div>
-      </header>
+          {/* LANGUAGE */}
 
-      {/* RESPONSIVE LANDSCAPE */}
+          <div className="selah-language flex shrink-0 rounded-full border border-white/10 bg-white/[0.03] p-1">
+
+            <button
+              type="button"
+              onClick={() => changeLanguage("uk")}
+              className={`rounded-full transition ${
+                isUk
+                  ? "bg-white text-black"
+                  : "text-white/40 hover:text-white"
+              }`}
+            >
+              UA
+            </button>
+
+            <button
+              type="button"
+              onClick={() => changeLanguage("es")}
+              className={`rounded-full transition ${
+                !isUk
+                  ? "bg-white text-black"
+                  : "text-white/40 hover:text-white"
+              }`}
+            >
+              ES
+            </button>
+
+          </div>
+
+          {/* CART */}
+
+          <Link
+            href="/cart"
+            aria-label={isUk ? "Кошик" : "Carrito"}
+            className="selah-cart flex shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] transition hover:border-white/40 hover:bg-white/10"
+          >
+            🛒
+          </Link>
+
+        </div>
+
+      </div>
 
       <style>{`
-        .selah-contact-icon {
-          display: none;
+
+        /* =========================
+           DEFAULT
+        ========================= */
+
+        .selah-menu {
+          margin-left: auto;
+          margin-right: 24px;
+          gap: 32px;
         }
 
-        @media (max-width: 639px) {
-          .selah-nav {
-            display: none;
-          }
-
-          .selah-contact-label {
-            display: none;
-          }
-
-          .selah-contact-icon {
-            display: inline;
-            font-size: 16px;
-          }
+        .selah-menu-link {
+          white-space: nowrap;
+          font-size: 14px;
+          color: rgba(255,255,255,0.6);
+          transition: color 0.2s;
         }
 
-        @media (orientation: landscape) and (min-width: 640px) and (max-width: 1023px) {
-          .selah-nav {
-            display: flex !important;
-            gap: 8px !important;
-            margin-left: auto !important;
-            margin-right: 8px !important;
-          }
+        .selah-menu-link:hover {
+          color: white;
+        }
 
-          .selah-nav a {
-            font-size: 9px !important;
-          }
+        .selah-right {
+          gap: 12px;
+        }
 
-          .selah-contact-label {
-            display: inline !important;
-          }
+        .selah-contact {
+          height: 40px;
+          padding-left: 16px;
+          padding-right: 16px;
+          font-size: 12px;
+        }
 
-          .selah-contact-icon {
-            display: none !important;
-          }
+        .selah-language {
+          gap: 2px;
+        }
 
-          header > div {
-            height: 64px !important;
-            padding-left: 10px !important;
-            padding-right: 10px !important;
-          }
+        .selah-language button {
+          padding: 6px 12px;
+          font-size: 10px;
+        }
 
-          .selah-contact-label {
-            font-size: 9px !important;
-          }
+        .selah-cart {
+          width: 40px;
+          height: 40px;
+          font-size: 18px;
+        }
 
-          header button {
-            height: 34px !important;
+
+        /* =========================
+           TABLET / HORIZONTAL PHONE
+           ВСЕ СЛОВА ЗАЛИШАЄМО
+        ========================= */
+
+        @media (orientation: landscape) and (max-width: 1023px) {
+
+          .selah-navbar-inner {
+            height: 58px !important;
             padding-left: 8px !important;
             padding-right: 8px !important;
           }
 
-          header a[href="/cart"] {
-            width: 34px !important;
-            height: 34px !important;
-            font-size: 15px !important;
+          .selah-logo {
+            font-size: 11px !important;
+            letter-spacing: 0.25em !important;
           }
 
-          header .flex.shrink-0 {
+          .selah-menu {
+            margin-left: auto !important;
+            margin-right: 8px !important;
+            gap: 9px !important;
+          }
+
+          .selah-menu-link {
+            font-size: 9px !important;
+            letter-spacing: -0.1px;
+          }
+
+          .selah-right {
             gap: 5px !important;
           }
+
+          .selah-contact {
+            height: 30px !important;
+            padding-left: 7px !important;
+            padding-right: 7px !important;
+            font-size: 8px !important;
+          }
+
+          .selah-language {
+            padding: 2px !important;
+          }
+
+          .selah-language button {
+            padding: 4px 6px !important;
+            font-size: 8px !important;
+          }
+
+          .selah-cart {
+            width: 30px !important;
+            height: 30px !important;
+            font-size: 14px !important;
+          }
         }
+
+
+        /* =========================
+           VERY SMALL LANDSCAPE
+           ========================= */
+
+        @media (orientation: landscape) and (max-width: 700px) {
+
+          .selah-navbar-inner {
+            padding-left: 5px !important;
+            padding-right: 5px !important;
+          }
+
+          .selah-menu {
+            gap: 6px !important;
+            margin-right: 5px !important;
+          }
+
+          .selah-menu-link {
+            font-size: 8px !important;
+          }
+
+          .selah-contact {
+            padding-left: 5px !important;
+            padding-right: 5px !important;
+            font-size: 7px !important;
+          }
+
+          .selah-language button {
+            padding-left: 5px !important;
+            padding-right: 5px !important;
+          }
+
+          .selah-cart {
+            width: 27px !important;
+            height: 27px !important;
+            font-size: 12px !important;
+          }
+        }
+
+
+        /* =========================
+           VERTICAL PHONE
+        ========================= */
+
+        @media (max-width: 639px) and (orientation: portrait) {
+
+          .selah-menu {
+            display: none !important;
+          }
+
+          .selah-contact {
+            width: 38px;
+            height: 38px;
+            padding: 0;
+            font-size: 0;
+          }
+
+          .selah-contact::after {
+            content: "☎";
+            font-size: 16px;
+          }
+
+          .selah-right {
+            margin-left: auto;
+          }
+
+          .selah-cart {
+            width: 38px;
+            height: 38px;
+          }
+        }
+
       `}</style>
-    </>
+
+    </header>
   );
 }
