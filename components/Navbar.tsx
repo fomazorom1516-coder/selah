@@ -53,9 +53,9 @@ export default function Navbar() {
             SELAH
           </Link>
 
-          {/* DESKTOP NAVIGATION */}
+          {/* NAVIGATION */}
 
-          <nav className="selah-desktop-nav ml-auto mr-2 hidden items-center gap-3 md:flex lg:mr-4 lg:gap-8">
+          <nav className="selah-nav ml-auto mr-2 flex items-center gap-3 lg:mr-4 lg:gap-8">
 
             <Link
               href="/"
@@ -101,15 +101,13 @@ export default function Navbar() {
                 aria-label={language === "uk" ? "Контакти" : "Contacto"}
                 className="flex h-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] px-3 text-xs text-white/60 transition hover:border-white/40 hover:bg-white/10 hover:text-white sm:px-4"
               >
-
-                <span className="selah-contact-label hidden md:inline">
+                <span className="selah-contact-label">
                   {language === "uk" ? "Контакти" : "Contacto"}
                 </span>
 
-                <span className="selah-contact-icon text-base md:hidden">
+                <span className="selah-contact-icon">
                   ☎
                 </span>
-
               </button>
 
               {/* CONTACT PANEL */}
@@ -201,23 +199,73 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* MOBILE LANDSCAPE FIX */}
+      {/* RESPONSIVE LANDSCAPE */}
 
       <style>{`
-        @media (orientation: landscape) and (max-width: 1023px) {
+        .selah-contact-icon {
+          display: none;
+        }
 
-          .selah-desktop-nav {
-            display: none !important;
+        @media (max-width: 639px) {
+          .selah-nav {
+            display: none;
           }
 
           .selah-contact-label {
-            display: none !important;
+            display: none;
           }
 
           .selah-contact-icon {
+            display: inline;
+            font-size: 16px;
+          }
+        }
+
+        @media (orientation: landscape) and (min-width: 640px) and (max-width: 1023px) {
+          .selah-nav {
+            display: flex !important;
+            gap: 8px !important;
+            margin-left: auto !important;
+            margin-right: 8px !important;
+          }
+
+          .selah-nav a {
+            font-size: 9px !important;
+          }
+
+          .selah-contact-label {
             display: inline !important;
           }
 
+          .selah-contact-icon {
+            display: none !important;
+          }
+
+          header > div {
+            height: 64px !important;
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
+
+          .selah-contact-label {
+            font-size: 9px !important;
+          }
+
+          header button {
+            height: 34px !important;
+            padding-left: 8px !important;
+            padding-right: 8px !important;
+          }
+
+          header a[href="/cart"] {
+            width: 34px !important;
+            height: 34px !important;
+            font-size: 15px !important;
+          }
+
+          header .flex.shrink-0 {
+            gap: 5px !important;
+          }
         }
       `}</style>
     </>
