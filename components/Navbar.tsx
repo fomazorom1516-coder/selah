@@ -58,13 +58,12 @@ export default function Navbar() {
           "
         >
 
-          {/* =================================================
-              LOGO
-          ================================================= */}
+          {/* LOGO */}
 
           <Link
             href="/"
             className="
+              shrink-0
               text-sm
               font-medium
               uppercase
@@ -79,7 +78,7 @@ export default function Navbar() {
 
           {/* =================================================
               DESKTOP MENU
-              ХОВАЄМО ТАКОЖ У MOBILE LANDSCAPE
+              Від 1024px і вище
           ================================================= */}
 
           <nav
@@ -87,8 +86,7 @@ export default function Navbar() {
               hidden
               items-center
               gap-8
-              md:flex
-              landscape-mobile-menu
+              lg:flex
             "
           >
 
@@ -154,15 +152,14 @@ export default function Navbar() {
           <div
             className="
               flex
+              shrink-0
               items-center
               gap-2
               sm:gap-3
             "
           >
 
-            {/* =================================================
-                CONTACTS
-            ================================================= */}
+            {/* CONTACTS */}
 
             <div className="relative">
 
@@ -170,6 +167,11 @@ export default function Navbar() {
                 type="button"
                 onClick={() =>
                   setContactsOpen(!contactsOpen)
+                }
+                aria-label={
+                  language === "uk"
+                    ? "Контакти"
+                    : "Contacto"
                 }
                 className="
                   flex
@@ -190,15 +192,11 @@ export default function Navbar() {
                 "
               >
 
-                {/* DESKTOP / VERTICAL */}
-
                 <span className="contact-label">
                   {language === "uk"
                     ? "Контакти"
                     : "Contacto"}
                 </span>
-
-                {/* MOBILE */}
 
                 <span className="contact-icon">
                   ☎
@@ -207,9 +205,7 @@ export default function Navbar() {
               </button>
 
 
-              {/* =================================================
-                  CONTACT PANEL
-              ================================================= */}
+              {/* CONTACT PANEL */}
 
               {contactsOpen && (
                 <div
@@ -311,13 +307,12 @@ export default function Navbar() {
             </div>
 
 
-            {/* =================================================
-                LANGUAGE
-            ================================================= */}
+            {/* LANGUAGE */}
 
             <div
               className="
                 flex
+                shrink-0
                 rounded-full
                 border
                 border-white/10
@@ -370,9 +365,7 @@ export default function Navbar() {
             </div>
 
 
-            {/* =================================================
-                CART
-            ================================================= */}
+            {/* CART */}
 
             <Link
               href="/cart"
@@ -385,6 +378,7 @@ export default function Navbar() {
                 flex
                 h-10
                 w-10
+                shrink-0
                 items-center
                 justify-center
                 rounded-full
@@ -406,20 +400,41 @@ export default function Navbar() {
 
 
       {/* =====================================================
-          MOBILE LANDSCAPE
-          При горизонтальному положенні телефону:
-          SELAH | ☎ | UA/ES | 🛒
+          MOBILE DISPLAY
       ===================================================== */}
 
       <style jsx>{`
+
         .contact-icon {
           display: none;
         }
 
-        @media (orientation: landscape) and (max-width: 1023px) {
-          .landscape-mobile-menu {
-            display: none !important;
+        /*
+         * Телефон у вертикальному положенні
+         */
+
+        @media (max-width: 639px) {
+
+          .contact-label {
+            display: none;
           }
+
+          .contact-icon {
+            display: inline;
+            font-size: 16px;
+          }
+
+        }
+
+
+        /*
+         * Телефон у горизонтальному положенні
+         *
+         * Навіть якщо ширина стала понад 640px,
+         * залишаємо компактну версію.
+         */
+
+        @media (orientation: landscape) and (max-width: 1023px) {
 
           .contact-label {
             display: none !important;
@@ -429,18 +444,9 @@ export default function Navbar() {
             display: inline !important;
             font-size: 16px;
           }
+
         }
 
-        @media (max-width: 639px) {
-          .contact-label {
-            display: none;
-          }
-
-          .contact-icon {
-            display: inline;
-            font-size: 16px;
-          }
-        }
       `}</style>
     </>
   );
