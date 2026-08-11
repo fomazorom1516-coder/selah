@@ -18,7 +18,6 @@ const translations = {
     cart: "КОШИК",
     open: "Відкрити кошик",
   },
-
   es: {
     cart: "CARRITO",
     open: "Abrir carrito",
@@ -42,8 +41,7 @@ function getLanguage(): Language {
 export default function FloatingCart() {
   const [quantity, setQuantity] = useState(0);
   const [total, setTotal] = useState(0);
-  const [language, setLanguage] =
-    useState<Language>("uk");
+  const [language, setLanguage] = useState<Language>("uk");
 
   /*
   =========================================================
@@ -100,8 +98,7 @@ export default function FloatingCart() {
   useEffect(() => {
     const updateCart = () => {
       try {
-        const saved =
-          localStorage.getItem("selah-cart");
+        const saved = localStorage.getItem("selah-cart");
 
         if (!saved) {
           setQuantity(0);
@@ -109,25 +106,21 @@ export default function FloatingCart() {
           return;
         }
 
-        const cart: CartItem[] =
-          JSON.parse(saved);
+        const cart: CartItem[] = JSON.parse(saved);
 
-        const itemsCount =
-          cart.reduce(
-            (sum, item) =>
-              sum +
+        const itemsCount = cart.reduce(
+          (sum, item) =>
+            sum + (Number(item.quantity) || 1),
+          0
+        );
+
+        const cartTotal = cart.reduce(
+          (sum, item) =>
+            sum +
+            (Number(item.price) || 0) *
               (Number(item.quantity) || 1),
-            0
-          );
-
-        const cartTotal =
-          cart.reduce(
-            (sum, item) =>
-              sum +
-              (Number(item.price) || 0) *
-                (Number(item.quantity) || 1),
-            0
-          );
+          0
+        );
 
         setQuantity(itemsCount);
         setTotal(cartTotal);
@@ -162,12 +155,6 @@ export default function FloatingCart() {
     };
   }, []);
 
-  /*
-  =========================================================
-  TRANSLATION
-  =========================================================
-  */
-
   const t = translations[language];
 
   /*
@@ -182,14 +169,15 @@ export default function FloatingCart() {
       aria-label={t.open}
       className="
         fixed
-        bottom-6
-        right-6
+        bottom-5
+        right-4
         z-[9999]
         group
+        sm:bottom-6
+        sm:right-6
       "
     >
-
-      {/* COLOR GLOW */}
+      {/* GLOW */}
 
       <div
         className="
@@ -216,13 +204,13 @@ export default function FloatingCart() {
           relative
           flex
           items-center
-          gap-3
+          gap-2
           rounded-full
           border
           border-white/20
           bg-black/90
-          px-4
-          py-3
+          px-3
+          py-2.5
           text-white
           backdrop-blur-xl
           shadow-[0_10px_40px_rgba(0,0,0,0.55)]
@@ -230,9 +218,11 @@ export default function FloatingCart() {
           duration-300
           group-hover:scale-105
           group-hover:border-white/50
+          sm:gap-3
+          sm:px-4
+          sm:py-3
         "
       >
-
         {/* ICON */}
 
         <div
@@ -241,13 +231,13 @@ export default function FloatingCart() {
             flex
             h-9
             w-9
+            shrink-0
             items-center
             justify-center
             rounded-full
             bg-white/10
           "
         >
-
           <span className="text-lg">
             🛒
           </span>
@@ -274,9 +264,7 @@ export default function FloatingCart() {
               {quantity}
             </span>
           )}
-
         </div>
-
 
         {/* INFORMATION */}
 
@@ -287,7 +275,6 @@ export default function FloatingCart() {
             sm:block
           "
         >
-
           <p
             className="
               text-[9px]
@@ -311,9 +298,7 @@ export default function FloatingCart() {
               .replace(".", ",")}{" "}
             €
           </p>
-
         </div>
-
 
         {/* ARROW */}
 
@@ -328,9 +313,7 @@ export default function FloatingCart() {
         >
           →
         </span>
-
       </div>
-
     </Link>
   );
 }
