@@ -7,10 +7,37 @@ type Language = "uk" | "es";
 
 type CartItem = {
   id: string;
-  type?: "tshirt" | "patch";
+  type?: "tshirt" | "patch" | "headwear";
+  category?: "tshirt" | "patch" | "headwear";
   price?: number;
   quantity?: number;
 };
+
+const translations = {
+  uk: {
+    cart: "КОШИК",
+    open: "Відкрити кошик",
+  },
+
+  es: {
+    cart: "CARRITO",
+    open: "Abrir carrito",
+  },
+};
+
+function getLanguage(): Language {
+  if (typeof window === "undefined") {
+    return "uk";
+  }
+
+  const saved = localStorage.getItem("selah-language");
+
+  if (saved === "uk" || saved === "es") {
+    return saved;
+  }
+
+  return "uk";
+}
 
 export default function FloatingCart() {
   const [quantity, setQuantity] = useState(0);
@@ -24,82 +51,12 @@ export default function FloatingCart() {
   =========================================================
   */
 
-  const updateLanguage = () => {
-    const saved =
-      localStorage.getItem("selah-language");
-
-    if (saved === "uk" || saved === "es") {
-      setLanguage(saved);
-    } else {
-      setLanguage("uk");
-    }
-  };
-
-  /*
-  =========================================================
-  CART
-  =========================================================
-  */
-
-  const updateCart = () => {
-    try {
-      const saved =
-        localStorage.getItem("selah-cart");
-
-      if (!saved) {
-        setQuantity(0);
-        setTotal(0);
-        return;
-      }
-
-      const cart: CartItem[] =
-        JSON.parse(saved);
-
-      const itemsCount =
-        cart.reduce(
-          (sum, item) =>
-            sum +
-            (Number(item.quantity) || 1),
-          0
-        );
-
-      const cartTotal =
-        cart.reduce(
-          (sum, item) =>
-            sum +
-            (Number(item.price) || 0) *
-              (Number(item.quantity) || 1),
-          0
-        );
-
-      setQuantity(itemsCount);
-      setTotal(cartTotal);
-
-    } catch {
-      setQuantity(0);
-      setTotal(0);
-    }
-  };
-
-  /*
-  =========================================================
-  EFFECTS
-  =========================================================
-  */
-
   useEffect(() => {
-    updateCart();
+    const updateLanguage = () => {
+      setLanguage(getLanguage());
+    };
+
     updateLanguage();
-
-    window.addEventListener(
-      "storage",
-      updateCart
-    );
-
-    window.addEventListener(
-      "selah-cart-updated",
-      updateCart
-    );
 
     window.addEventListener(
       "selah-language-changed",
@@ -109,6 +66,87 @@ export default function FloatingCart() {
     window.addEventListener(
       "language-changed",
       updateLanguage
+    );
+
+    window.addEventListener(
+      "storage",
+      updateLanguage
+    );
+
+    return () => {
+      window.removeEventListener(
+        "selah-language-changed",
+        updateLanguage
+      );
+
+      window.removeEventListener(
+        "language-changed",
+        updateLanguage
+      );
+
+      window.removeEventListener(
+        "storage",
+        updateLanguage
+      );
+    };
+  }, []);
+
+  /*
+  =========================================================
+  CART
+  =========================================================
+  */
+
+  useEffect(() => {
+    const updateCart = () => {
+      try {
+        const saved =
+          localStorage.getItem("selah-cart");
+
+        if (!saved) {
+          setQuantity(0);
+          setTotal(0);
+          return;
+        }
+
+        const cart: CartItem[] =
+          JSON.parse(saved);
+
+        const itemsCount =
+          cart.reduce(
+            (sum, item) =>
+              sum +
+              (Number(item.quantity) || 1),
+            0
+          );
+
+        const cartTotal =
+          cart.reduce(
+            (sum, item) =>
+              sum +
+              (Number(item.price) || 0) *
+                (Number(item.quantity) || 1),
+            0
+          );
+
+        setQuantity(itemsCount);
+        setTotal(cartTotal);
+      } catch {
+        setQuantity(0);
+        setTotal(0);
+      }
+    };
+
+    updateCart();
+
+    window.addEventListener(
+      "storage",
+      updateCart
+    );
+
+    window.addEventListener(
+      "selah-cart-updated",
+      updateCart
     );
 
     return () => {
@@ -121,16 +159,6 @@ export default function FloatingCart() {
         "selah-cart-updated",
         updateCart
       );
-
-      window.removeEventListener(
-        "selah-language-changed",
-        updateLanguage
-      );
-
-      window.removeEventListener(
-        "language-changed",
-        updateLanguage
-      );
     };
   }, []);
 
@@ -140,15 +168,7 @@ export default function FloatingCart() {
   =========================================================
   */
 
-  const cartLabel =
-    language === "es"
-      ? "CARRITO"
-      : "КОШИК";
-
-  const ariaLabel =
-    language === "es"
-      ? "Abrir carrito"
-      : "Відкрити кошик";
+  const t = translations[language];
 
   /*
   =========================================================
@@ -159,7 +179,7 @@ export default function FloatingCart() {
   return (
     <Link
       href="/cart"
-      aria-label={ariaLabel}
+      aria-label={t.open}
       className="
         fixed
         bottom-6
@@ -227,6 +247,7 @@ export default function FloatingCart() {
             bg-white/10
           "
         >
+
           <span className="text-lg">
             🛒
           </span>
@@ -253,11 +274,19 @@ export default function FloatingCart() {
               {quantity}
             </span>
           )}
+
         </div>
+
 
         {/* INFORMATION */}
 
-        <div className="hidden min-w-[75px] sm:block">
+        <div
+          className="
+            hidden
+            min-w-[75px]
+            sm:block
+          "
+        >
 
           <p
             className="
@@ -267,10 +296,16 @@ export default function FloatingCart() {
               text-white/40
             "
           >
-            {cartLabel}
+            {t.cart}
           </p>
 
-          <p className="mt-0.5 text-sm font-medium">
+          <p
+            className="
+              mt-0.5
+              text-sm
+              font-medium
+            "
+          >
             {total
               .toFixed(2)
               .replace(".", ",")}{" "}
@@ -278,6 +313,7 @@ export default function FloatingCart() {
           </p>
 
         </div>
+
 
         {/* ARROW */}
 
