@@ -769,7 +769,7 @@ export default function WordsPage() {
 
                     <article className="space-y-8 text-[17px] leading-8 text-white/65 sm:text-lg">
 
-                      {john4.map((paragraph, index) => {
+                      {john4[language].map((paragraph, index) => {
 
                         const important =
                           index === 7 ||
