@@ -95,6 +95,15 @@ export default function Navbar() {
             {isUk ? "Головні убори" : "Gorras"}
           </Link>
 
+          {/* СЛОВО ДЛЯ ТЕБЕ */}
+
+          <Link
+            href="/words"
+            className="rounded-full border border-white/20 bg-white/[0.06] px-4 py-2 text-sm text-white/80 transition hover:border-white/40 hover:bg-white/10 hover:text-white"
+          >
+            {isUk ? "Слово для тебе" : "Una palabra para ti"}
+          </Link>
+
         </nav>
 
         {/* =========================
@@ -207,6 +216,14 @@ export default function Navbar() {
             <MobileLink
               href="/headwear"
               label={isUk ? "Головні убори" : "Gorras"}
+              onClick={closeMobileMenu}
+            />
+
+            {/* СЛОВО ДЛЯ ТЕБЕ */}
+
+            <MobileLink
+              href="/words"
+              label={isUk ? "Слово для тебе" : "Una palabra para ti"}
               onClick={closeMobileMenu}
             />
 

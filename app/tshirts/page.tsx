@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 const sizes = ["XS", "S", "M", "L", "XL", "XXL", "3XL"];
@@ -634,17 +635,34 @@ export default function TshirtsPage() {
 
       <section className="mx-auto max-w-7xl px-6 pt-16 pb-12">
 
-        <p className="text-xs uppercase tracking-[0.4em] text-white/40">
-          SELAH
-        </p>
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: 30,
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+          transition={{
+            duration: 0.8,
+            ease: "easeOut",
+          }}
+        >
 
-        <h1 className="mt-5 text-4xl font-light tracking-tight md:text-6xl">
-          {t.shirts}
-        </h1>
+          <p className="text-xs uppercase tracking-[0.4em] text-white/40">
+            SELAH
+          </p>
 
-        <p className="mt-5 max-w-2xl text-sm leading-7 text-white/50 md:text-base">
-          {t.heroText}
-        </p>
+          <h1 className="mt-5 text-4xl font-light tracking-tight md:text-6xl">
+            {t.shirts}
+          </h1>
+
+          <p className="mt-5 max-w-2xl text-sm leading-7 text-white/50 md:text-base">
+            {t.heroText}
+          </p>
+
+        </motion.div>
 
       </section>
 
