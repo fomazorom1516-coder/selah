@@ -57,7 +57,9 @@ const words: Word[] = [
   },
 ];
 
-const isaiah41 = [
+const isaiah41 = {
+  uk: [
+
   `Мовчіть, острови, передо мною! Нехай народи відновлять свою силу! Нехай приступлять і тоді говорять, — станьмо на суд разом!`,
 
   `Хто збудив зі сходу мужа, за яким слідом іде перемога? Хто видає йому народи, хто царів підбиває? Меч його в порох їх обертає, а лук розносить, як солому.`,
@@ -115,10 +117,44 @@ const isaiah41 = [
   `Я розглядавсь, та не було нікого; і не було порадника між ними, щоб їх спитати, і щоб відповіли.`,
 
   `Усі вони — марнота, робота їх — надармо, порожній вітер — їхні божища литі.`,
-];
+  ],
+  es: [
+    `Escuchadme, islas, y esfuércense los pueblos; alléguense, y entonces hablen: estemos juntamente á juicio.`,
+    `¿Quién despertó del oriente al justo, lo llamó para que le siguiese, entregó delante de él naciones, é hízolo enseñorear de reyes; entrególos á su espada como polvo, y á su arco como hojarascas arrebatadas?`,
+    `Siguiólos, pasó en paz por camino por donde sus pies nunca habían entrado.`,
+    `¿Quién obró é hizo esto? ¿Quién llama las generaciones desde el principio? Yo Jehová, el primero, y yo mismo con los postreros.`,
+    `Las islas vieron, y tuvieron temor, los términos de la tierra se espantaron: congregáronse, y vinieron.`,
+    `Cada cual ayudó á su cercano, y á su hermano dijo: Esfuérzate.`,
+    `El carpintero animó al platero, y el que alisa con martillo al que batía en el yunque, diciendo: Buena está la soldadura, y afirmólo con clavos, porque no se moviese.`,
+    `Mas tú, Israel, siervo mío eres, tú, Jacob, á quien yo escogí, simiente de Abraham mi amigo.`,
+    `Porque te tomé de los extremos de la tierra, y de sus principales te llamé, y te dije: Mi siervo eres tú, te escogí, y no te deseché.`,
+    `No temas, que yo soy contigo; no desmayes, que yo soy tu Dios que te esfuerzo: siempre te ayudaré, siempre te sustentaré con la diestra de mi justicia.`,
+    `He aquí que todos los que se airan contra ti, serán avergonzados y confundidos: serán como nada y perecerán, los que contienden contigo.`,
+    `Los buscarás, y no los hallarás, los que tienen contienda contigo, serán como nada, y como cosa que no es, aquellos que te hacen guerra.`,
+    `Porque yo Jehová soy tu Dios, que te ase de tu mano derecha, y te dice: No temas, yo te ayudé.`,
+    `No temas, gusano de Jacob, oh vosotros los pocos de Israel; yo te socorrí, dice Jehová, y tu Redentor el Santo de Israel.`,
+    `He aquí que yo te he puesto por trillo, trillo nuevo, lleno de dientes: trillarás montes y los molerás, y collados tornarás en tamo.`,
+    `Los aventarás, y los llevará el viento, y esparcirálos el torbellino. Tú empero te regocijarás en Jehová, te gloriarás en el Santo de Israel.`,
+    `Los afligidos y menesterosos buscan las aguas, que no hay; secóse de sed su lengua; yo Jehová los oiré, yo el Dios de Israel no los desampararé.`,
+    `En los altos abriré ríos, y fuentes en mitad de los llanos: tornaré el desierto en estanques de aguas, y en manaderos de aguas la tierra seca.`,
+    `Daré en el desierto cedros, espinos, arrayanes, y olivas; pondré en la soledad hayas, olmos, y álamos juntamente;`,
+    `Porque vean y conozcan, y adviertan y entiendan todos, que la mano de Jehová hace esto, y que el Santo de Israel lo crió.`,
+    `Alegad por vuestra causa, dice Jehová: exhibid vuestros fundamentos, dice el Rey de Jacob.`,
+    `Traigan, y anúnciennos lo que ha de venir: dígannos lo que ha pasado desde el principio, y pondremos nuestro corazón en ello; sepamos también su postrimería, y hacednos entender lo que ha de venir.`,
+    `Dadnos nuevas de lo que ha de ser después, para que sepamos que vosotros sois dioses; ó á lo menos haced bien, ó mal, para que tengamos qué contar, y juntamente nos maravillemos.`,
+    `He aquí que vosotros sois de nada, y vuestras obras de vanidad; abominación el que os escogió.`,
+    `Del norte desperté uno, y vendrá; del nacimiento del sol llamará en mi nombre: y hollará príncipes como lodo, y como pisa el barro el alfarero.`,
+    `¿Quién lo anunció desde el principio, para que sepamos; ó de tiempo atrás, y diremos: Es justo? Cierto, no hay quien anuncie, sí, no hay quien enseñe, ciertamente no hay quien oiga vuestras palabras.`,
+    `Yo soy el primero que he enseñado estas cosas á Sión, y á Jerusalem daré un portador de alegres nuevas.`,
+    `Miré, y no había ninguno; y pregunté de estas cosas, y ningún consejero hubo: preguntéles, y no respondieron palabra.`,
+    `He aquí, todos iniquidad, y las obras de ellos nada: viento y vanidad son sus vaciadizos.`
+  ],
+};
 
 
-const john4 = [
+const john4 = {
+  uk: [
+
   `Любі, не кожному духові вірте, а випробовуйте духів, чи вони від Бога, — багато бо лжепророків прийшло на світ.`,
   `З цього спізнавайте Божий дух: кожен дух, який визнає, що Ісус Христос прийшов у тілі, той від Бога.`,
   `А кожен дух, що не визнає Ісуса, — той не від Бога, але антихриста, про якого ви чували, що він прийде, та й тепер уже у світі.`,
@@ -140,7 +176,31 @@ const john4 = [
   `Ми любимо, бо він перший полюбив нас.`,
   `Коли хтось каже: «Я люблю Бога», а ненавидить брата свого, той не правдомовець. Бо хто не любить брата свого, якого бачить, той не може любити Бога, якого він не бачить.`,
   `І таку ми заповідь одержали від нього: «Хто любить Бога, той нехай любить і брата свого.»`,
-];
+  ],
+  es: [
+    `Amados, no creáis á todo espíritu, sino probad los espíritus si son de Dios; porque muchos falsos profetas son salidos en el mundo.`,
+    `En esto conoced el Espíritu de Dios: todo espíritu que confiesa que Jesucristo es venido en carne es de Dios:`,
+    `Y todo espíritu que no confiesa que Jesucristo es venido en carne, no es de Dios: y éste es el espíritu del anticristo, del cual vosotros habéis oído que ha de venir, y que ahora ya está en el mundo.`,
+    `Hijitos, vosotros sois de Dios, y los habéis vencido; porque el que en vosotros está, es mayor que el que está en el mundo.`,
+    `Ellos son del mundo; por eso hablan del mundo, y el mundo los oye.`,
+    `Nosotros somos de Dios: el que conoce á Dios, nos oye: el que no es de Dios, no nos oye. Por esto conocemos el espíritu de verdad y el espíritu de error.`,
+    `Carísimos, amémonos unos á otros; porque el amor es de Dios. Cualquiera que ama, es nacido de Dios, y conoce á Dios.`,
+    `El que no ama, no conoce á Dios; porque Dios es amor.`,
+    `En esto se mostró el amor de Dios para con nosotros, en que Dios envió á su Hijo unigénito al mundo, para que vivamos por él.`,
+    `En esto consiste el amor: no que nosotros hayamos amado á Dios, sino que él nos amó á nosotros, y ha enviado á su Hijo en propiciación por nuestros pecados.`,
+    `Amados, si Dios así nos ha amado, debemos también nosotros amarnos unos á otros.`,
+    `Ninguno vió jamás á Dios. Si nos amamos unos á otros, Dios está en nosotros, y su amor es perfecto en nosotros:`,
+    `En esto conocemos que estamos en él, y él en nosotros, en que nos ha dado de su Espíritu.`,
+    `Y nosotros hemos visto y testificamos que el Padre ha enviado al Hijo para ser Salvador del mundo.`,
+    `Cualquiera que confesare que Jesús es el Hijo de Dios, Dios está en él, y él en Dios.`,
+    `Y nosotros hemos conocido y creído el amor que Dios tiene para con nosotros. Dios es amor; y el que vive en amor, vive en Dios, y Dios en él.`,
+    `En esto es perfecto el amor con nosotros, para que tengamos confianza en el día del juicio; pues como él es, así somos nosotros en este mundo.`,
+    `En amor no hay temor; mas el perfecto amor echa fuera el temor: porque el temor tiene pena. De donde el que teme, no está perfecto en el amor.`,
+    `Nosotros le amamos á él, porque él nos amó primero.`,
+    `Si alguno dice, Yo amo á Dios, y aborrece á su hermano, es mentiroso. Porque el que no ama á su hermano al cual ha visto, ¿cómo puede amar á Dios á quien no ha visto?`,
+    `Y nosotros tenemos este mandamiento de él: Que el que ama á Dios, ame también á su hermano.`
+  ],
+};
 
 export default function WordsPage() {
   const [language, setLanguage] = useState<Language>("uk");
@@ -240,6 +300,8 @@ export default function WordsPage() {
               ? "Знайди свій патч і відкрий Слово, роздуми та молитву."
               : "Encuentra tu parche y descubre la Palabra, una reflexión y una oración."}
           </p>
+
+
 
         </div>
 
@@ -499,7 +561,7 @@ export default function WordsPage() {
 
                     <article className="space-y-8 text-[17px] leading-8 text-white/65 sm:text-lg">
 
-                      {(selectedWord.number === "03" ? john4 : isaiah41).map((paragraph, index) => {
+                      {(selectedWord.number === "03" ? john4[language] : isaiah41[language]).map((paragraph, index) => {
 
                         const important =
                           selectedWord.number === "03"
@@ -541,11 +603,31 @@ export default function WordsPage() {
                             src={selectedWord.number === "03"
                               ? "/audio/1-john-4.mp3"
                               : "/audio/isaiah-41.mp3"}
-                            title="Роздуми над Словом"
+                            title={isUk
+                              ? "Роздуми над Словом"
+                              : "Reflexión sobre la Palabra"}
                             reference={selectedWord.number === "03"
-                              ? "1 ІВАНА 4:8"
-                              : "ІСАЯ 41"}
+                              ? (isUk ? "1 ІВАНА 4:8" : "1 JUAN 4:8")
+                              : (isUk ? "ІСАЯ 41" : "ISAÍAS 41")}
                           />
+
+                          <div className="mt-4 flex items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.025] px-4 py-3 shadow-[0_0_35px_rgba(255,255,255,0.18)] hover:shadow-[0_0_45px_rgba(255,255,255,0.35)] transition-all duration-500">
+                            <span className="mt-0.5 text-base">⚠️</span>
+
+                            <div>
+                              <p className="text-sm font-medium leading-6 text-white/80">
+                                {isUk
+                                  ? "Особистий характер роздумів"
+                                  : "Carácter personal de la reflexión"}
+                              </p>
+
+                              <p className="mt-1 text-sm leading-6 text-white/50">
+                                {isUk
+                                  ? "Ці роздуми є особистим духовним переживанням Божого Слова. Господь може промовляти до кожного з нас по-особливому. Особисте розуміння не замінює вчення Церкви, тому важливі духовні висновки варто звіряти зі Святим Письмом, Катехизмом та вченням УГКЦ."
+                                  : "Estas reflexiones son una experiencia espiritual personal de la Palabra de Dios. El Señor puede hablar a cada uno de nosotros de manera particular. La comprensión personal no sustituye la enseñanza de la Iglesia; por eso, las conclusiones espirituales importantes deben contrastarse con la Sagrada Escritura, el Catecismo y la enseñanza de la UGCC."}
+                              </p>
+                            </div>
+                          </div>
                         </div>
 
                         {/* PRAYER */}
@@ -595,36 +677,61 @@ export default function WordsPage() {
                           </div>
 
                           <div className="mt-7 space-y-5 text-[16px] leading-8 text-white/65 sm:text-lg">
+                            {isUk ? (
+                              <>
+                                <p>
+                                  Господи Боже мій, люблячий Пастирю і Отче,
+                                  Ти породив мене з любові й для любові.
+                                  Даруй мені ласку кожного дня проживати так, як Ти хочеш,
+                                  і розуміти, що кожен день даний мені для того,
+                                  щоб я шукав і знаходив Тебе.
+                                </p>
 
-                            <p>
-                              Господи Боже, Боже мій і Царю,
-                              Ти, що створив мене з нічого,
-                              створив мене з пороху земного
-                              і вдихнув у мене життя.
-                            </p>
+                                <p>
+                                  Даруй Свою благодать мені та моїм рідним,
+                                  щоб ми йшли дорогою до святості.
+                                  Даруй мені ласку смирення і любові,
+                                  бо знаю: там, де немає смирення,
+                                  там немає справжньої любові.
+                                </p>
 
-                            <p>
-                              Поможи, Господи, моєму невірству.
-                              Даруй мені ласку Твоєї благодаті —
-                              розпізнавати її, приймати її
-                              і йти дорогою, якою Ти йшов.
-                            </p>
+                                <p>
+                                  Дай мені ласку розпізнавати
+                                  і бути мудрим у своїх виборах.
+                                  Нехай моє серце завжди шукає Тебе, мого Бога.
+                                  Нехай моє серце належить Тобі й буде для Тебе.
+                                  Амінь.
+                                </p>
+                              </>
+                            ) : (
+                              <>
+                                <p>
+                                  Señor, Dios mío, Pastor amoroso y Padre,
+                                  Tú me has creado por amor y para el amor.
+                                  Concédeme la gracia de vivir cada día como Tú quieres
+                                  y de comprender que cada día me es dado
+                                  para buscarte y encontrarte.
+                                </p>
 
-                            <p>
-                              Навчи мене не боятися, коли я слабкий,
-                              довіряти Тобі, коли не розумію,
-                              і пам'ятати, що Ти поруч.
-                            </p>
+                                <p>
+                                  Derrama tu gracia sobre mí y sobre mis seres queridos,
+                                  para que caminemos hacia la santidad.
+                                  Concédeme la gracia de la humildad y del amor,
+                                  porque sé que donde no hay humildad,
+                                  no puede existir un amor verdadero.
+                                </p>
 
-                            <p className="text-white/85">
-                              Нехай буде воля Твоя в моєму житті.
-                            </p>
+                                <p>
+                                  Dame la gracia de discernir
+                                  y de ser sabio en mis decisiones.
+                                  Que mi corazón te busque siempre a Ti, mi Dios.
+                                  Que mi corazón te pertenezca y sea para Ti.
+                                  Amén.
+                                </p>
+                              </>
+                            )}
 
-                            <p className="pt-2 text-center text-white/80">
-                              Амінь.
-                            </p>
-
-                          </div>
+</div>
 
                           <div className="mt-8 flex justify-center">
 

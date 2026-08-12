@@ -65,9 +65,32 @@ export default function AudioPlayer({ src = "/audio/isaiah-41.mp3", title = "Р�
             </span>
           </div>
 
-          <div className="mt-4 h-1 overflow-hidden rounded-full bg-white/10">
+          <div
+            className="mt-4 h-2 cursor-pointer overflow-hidden rounded-full bg-white/10"
+            onClick={(event) => {
+              if (!audioRef.current || !audioRef.current.duration) return;
+
+              const rect = event.currentTarget.getBoundingClientRect();
+              const clickPosition = event.clientX - rect.left;
+              const percentage = Math.max(
+                0,
+                Math.min(1, clickPosition / rect.width)
+              );
+
+              audioRef.current.currentTime =
+                percentage * audioRef.current.duration;
+
+              setProgress(percentage * 100);
+            }}
+            role="slider"
+            aria-label="Перемотування аудіо"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={Math.round(progress)}
+            tabIndex={0}
+          >
             <div
-              className="h-full rounded-full bg-white/60 transition-[width] duration-300"
+              className="h-full rounded-full bg-white/60 transition-[width] duration-100"
               style={{ width: `${progress}%` }}
             />
           </div>
