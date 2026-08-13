@@ -631,38 +631,120 @@ export default function TshirtsPage() {
   return (
     <main className="min-h-screen bg-black text-white">
 
-      {/* HEADER */}
+      {/* HERO */}
 
-      <section className="mx-auto max-w-7xl px-6 pt-16 pb-12">
+      <section className="relative overflow-hidden border-b border-white/10">
 
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: 30,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
-          transition={{
-            duration: 0.8,
-            ease: "easeOut",
+        <div
+          className="
+            relative
+            min-h-[430px]
+            w-full
+            bg-[length:85%_auto]
+            bg-center
+            bg-no-repeat
+            md:min-h-[520px]
+          "
+          style={{
+            backgroundImage:
+              "url('/images/tshirts-hero.jpg')",
           }}
         >
 
-          <p className="text-xs uppercase tracking-[0.4em] text-white/40">
-            SELAH
-          </p>
+          <div className="absolute inset-0 bg-black/25" />
 
-          <h1 className="mt-5 text-4xl font-light tracking-tight md:text-6xl">
-            {t.shirts}
-          </h1>
+          <div
+            className="
+              absolute
+              inset-0
+              bg-gradient-to-r
+              from-black/80
+              via-black/35
+              to-transparent
+            "
+          />
 
-          <p className="mt-5 max-w-2xl text-sm leading-7 text-white/50 md:text-base">
-            {t.heroText}
-          </p>
+          <div
+            className="
+              absolute
+              inset-x-0
+              bottom-0
+              h-40
+              bg-gradient-to-t
+              from-black
+              to-transparent
+            "
+          />
 
-        </motion.div>
+          <div
+            className="
+              relative
+              z-10
+              mx-auto
+              flex
+              min-h-[430px]
+              max-w-7xl
+              items-end
+              px-6
+              pb-16
+              md:min-h-[520px]
+              md:pb-20
+            "
+          >
+
+            <motion.div
+              initial={{
+                opacity: 0,
+                y: 30,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              transition={{
+                duration: 0.8,
+                ease: "easeOut",
+              }}
+              className="max-w-xl"
+            >
+
+              <p className="text-xs uppercase tracking-[0.4em] text-white/60">
+                SELAH
+              </p>
+
+              <h1
+                className="
+                  mt-4
+                  text-5xl
+                  font-light
+                  tracking-tight
+                  text-white
+                  drop-shadow-2xl
+                  md:text-7xl
+                "
+              >
+                {t.shirts}
+              </h1>
+
+              <p
+                className="
+                  mt-5
+                  max-w-lg
+                  text-sm
+                  leading-7
+                  text-white/70
+                  drop-shadow-lg
+                  md:text-base
+                "
+              >
+                {t.heroText}
+              </p>
+
+            </motion.div>
+
+          </div>
+
+        </div>
 
       </section>
 
