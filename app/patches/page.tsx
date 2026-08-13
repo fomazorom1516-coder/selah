@@ -53,6 +53,9 @@ const translations = {
     added: "Додано ✓",
     language: "Мова",
     back: "Повернутися до футболок",
+    warningTitle: "Акуратно знімай патч.",
+    warningText:
+      "Від'єднуй Velcro-патч повільно, починаючи з кутика, та притримуй тканину футболки. Різкий відрив може пошкодити тканину.",
   },
 
   es: {
@@ -65,6 +68,9 @@ const translations = {
     added: "Añadido ✓",
     language: "Idioma",
     back: "Volver a polos",
+    warningTitle: "Retira el parche con cuidado.",
+    warningText:
+      "Desprende el parche Velcro lentamente, empezando por una esquina y sujetando la tela de la camiseta. Un tirón brusco puede dañar el tejido.",
   },
 };
 
@@ -476,6 +482,14 @@ export default function PatchesPage() {
             >
               {t.description}
             </p>
+
+            <div className="mt-5 flex max-w-2xl items-start gap-3 rounded-xl border border-amber-400/20 bg-amber-400/[0.06] px-4 py-3 shadow-[0_0_30px_rgba(251,191,36,0.05)] transition-all duration-300 hover:border-amber-400/35 hover:bg-amber-400/[0.09]">
+              <span className="mt-0.5 text-base">⚠️</span>
+              <p className="text-xs leading-5 text-white/50">
+                <span className="font-medium text-amber-200/90">{t.warningTitle}</span>{" "}
+                {t.warningText}
+              </p>
+            </div>
 
           </div>
 
