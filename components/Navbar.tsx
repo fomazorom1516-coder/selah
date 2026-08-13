@@ -104,6 +104,13 @@ export default function Navbar() {
             {isUk ? "Слово для тебе" : "Una palabra para ti"}
           </Link>
 
+          <Link
+            href="/reviews"
+            className="text-base text-white/60 transition hover:text-white"
+          >
+            {isUk ? "Відгуки" : "Opiniones"}
+          </Link>
+
         </nav>
 
         {/* =========================
@@ -224,6 +231,12 @@ export default function Navbar() {
             <MobileLink
               href="/words"
               label={isUk ? "Слово для тебе" : "Una palabra para ti"}
+              onClick={closeMobileMenu}
+            />
+
+            <MobileLink
+              href="/reviews"
+              label={isUk ? "Відгуки" : "Opiniones"}
               onClick={closeMobileMenu}
             />
 
