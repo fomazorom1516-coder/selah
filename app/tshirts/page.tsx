@@ -2,8 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-
-const sizes = ["XS", "S", "M", "L", "XL", "XXL", "3XL"];
+import SizeGuide, { type SizeMeasurement } from "../../components/SizeGuide";
 
 type Language = "uk" | "es";
 
@@ -77,6 +76,8 @@ type TShirt = {
     };
     value: string;
   };
+
+  sizeGuide: SizeMeasurement[];
 };
 
 const tshirts: TShirt[] = [
@@ -131,6 +132,17 @@ const tshirts: TShirt[] = [
       },
       value: "#111111",
     },
+
+    sizeGuide: [
+      { size: "XS", width: 45, length: 65 },
+      { size: "S", width: 48, length: 68 },
+      { size: "M", width: 51, length: 71 },
+      { size: "L", width: 54, length: 74 },
+      { size: "XL", width: 60, length: 77 },
+      { size: "XXL", width: 66, length: 80 },
+      { size: "3XL", width: 72, length: 83 },
+      { size: "4XL", width: 78, length: 86 },
+    ],
   },
 
   {
@@ -182,6 +194,17 @@ const tshirts: TShirt[] = [
       },
       value: "#2455a4",
     },
+
+    sizeGuide: [
+      { size: "XS", width: 42, length: 66 },
+      { size: "S", width: 46, length: 68 },
+      { size: "M", width: 50, length: 70 },
+      { size: "L", width: 54, length: 72 },
+      { size: "XL", width: 58, length: 74 },
+      { size: "XXL", width: 66, length: 77 },
+      { size: "3XL", width: 70, length: 80 },
+      { size: "4XL", width: 74, length: 83 },
+    ],
   },
 
   {
@@ -230,6 +253,17 @@ const tshirts: TShirt[] = [
       },
       value: "#18202b",
     },
+
+    sizeGuide: [
+      { size: "XS", width: 42, length: 63 },
+      { size: "S", width: 46, length: 65 },
+      { size: "M", width: 50, length: 67 },
+      { size: "L", width: 54, length: 69 },
+      { size: "XL", width: 58, length: 71 },
+      { size: "XXL", width: 62, length: 74 },
+      { size: "3XL", width: 66, length: 78 },
+      { size: "4XL", width: 70, length: 82 },
+    ],
   },
 
   {
@@ -281,6 +315,16 @@ const tshirts: TShirt[] = [
       },
       value: "#7b8490",
     },
+
+    sizeGuide: [
+      { size: "XS", width: 51, length: 72 },
+      { size: "S", width: 54, length: 74 },
+      { size: "M", width: 57, length: 76 },
+      { size: "L", width: 60, length: 78 },
+      { size: "XL", width: 63, length: 80 },
+      { size: "2XL", width: 66, length: 82 },
+      { size: "3XL", width: 69, length: 84 },
+    ],
   },
 ];
 
@@ -622,10 +666,19 @@ export default function TshirtsPage() {
   ========================================================
   */
 
-  const toggleProduct = (id: string) => {
+  const toggleProduct = (product: TShirt) => {
     setExpandedProduct((current) =>
-      current === id ? null : id
+      current === product.id ? null : product.id
     );
+
+    if (expandedProduct !== product.id) {
+      setSelectedSize(
+        product.sizeGuide.find(
+          (measurement) => measurement.size === "M"
+        )?.size ?? product.sizeGuide[0].size
+      );
+      setQuantity(1);
+    }
   };
 
   return (
@@ -796,7 +849,7 @@ export default function TshirtsPage() {
                 <button
                   type="button"
                   onClick={() =>
-                    toggleProduct(product.id)
+                    toggleProduct(product)
                   }
                   className="block w-full text-left"
                 >
@@ -1105,8 +1158,8 @@ export default function TshirtsPage() {
 
                         <div className="mt-4 grid grid-cols-4 gap-2">
 
-                          {sizes.map(
-                            (size) => (
+                          {product.sizeGuide.map(
+                            ({ size }) => (
 
                               <button
                                 key={size}
@@ -1138,6 +1191,12 @@ export default function TshirtsPage() {
                           )}
 
                         </div>
+
+                        <SizeGuide
+                          productName={product.name[language]}
+                          measurements={product.sizeGuide}
+                          language={language}
+                        />
 
                       </div>
 
@@ -1431,9 +1490,7 @@ export default function TshirtsPage() {
                       <button
                         type="button"
                         onClick={() =>
-                          toggleProduct(
-                            product.id
-                          )
+                          toggleProduct(product)
                         }
                         className="
                           mt-4
