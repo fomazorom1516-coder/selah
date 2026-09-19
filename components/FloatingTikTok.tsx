@@ -7,7 +7,7 @@ export default function FloatingTikTok() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="SELAH on TikTok"
-      className="fixed bottom-6 left-6 z-[100] flex h-14 w-14 items-center justify-center rounded-full border border-white/20 bg-black/90 text-white shadow-2xl backdrop-blur-md transition-all duration-300 hover:scale-110 hover:bg-white hover:text-black active:scale-95 md:bottom-8 md:left-8"
+      className="fixed bottom-6 left-6 z-[100] flex h-14 w-14 items-center justify-center rounded-full border border-white/20 bg-black/90 text-white shadow-[0_0_18px_rgba(255,255,255,0.22)] backdrop-blur-md transition-all duration-300 hover:scale-110 hover:border-white/50 hover:bg-white hover:text-black hover:shadow-[0_0_30px_rgba(255,255,255,0.55)] active:scale-95 md:bottom-8 md:left-8"
     >
       <svg
         viewBox="0 0 24 24"
