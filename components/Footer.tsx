@@ -23,6 +23,15 @@ export default function Footer() {
             Telegram
           </a>
 
+          <a
+            href="https://www.tiktok.com/@selahverse.live"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition hover:text-white"
+          >
+            TikTok
+          </a>
+
           <a href="#" className="transition hover:text-white">
             YouTube
           </a>
