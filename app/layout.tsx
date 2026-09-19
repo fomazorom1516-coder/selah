@@ -16,8 +16,31 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://selahverse.live"),
   title: "SELAH",
   description: "SELAH — носи своє послання.",
+  openGraph: {
+    title: "SELAH",
+    description: "SELAH — носи своє послання.",
+    url: "https://selahverse.live",
+    siteName: "SELAH",
+    images: [
+      {
+        url: "/images/selah-preview.png",
+        width: 1536,
+        height: 1024,
+        alt: "SELAH — Faith • Purpose • A Higher Life",
+      },
+    ],
+    locale: "uk_UA",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SELAH",
+    description: "SELAH — носи своє послання.",
+    images: ["/images/selah-preview.png"],
+  },
 };
 
 export default function RootLayout({
