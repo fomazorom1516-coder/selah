@@ -163,7 +163,7 @@ const tshirts: TShirt[] = [
       "/images/products/tshirt-04.PNG",
     ],
 
-    price: 19.99,
+    price: 27.99,
 
     material: {
       uk: "Гладка тканина, 100% чесана попередньо усаджена бавовна",
@@ -222,7 +222,7 @@ const tshirts: TShirt[] = [
 
     images: ["/images/products/tshirt-06.PNG"],
 
-    price: 19.99,
+    price: 27.99,
 
     material: {
       uk: "100% чесана попередньо усаджена бавовна",
@@ -284,7 +284,7 @@ const tshirts: TShirt[] = [
       "/images/products/tshirt-08.PNG",
     ],
 
-    price: 19.99,
+    price: 27.99,
 
     material: {
       uk: "100% щільна бавовна",
