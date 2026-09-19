@@ -4,6 +4,7 @@ import "./globals.css";
 
 import Navbar from "../components/Navbar";
 import FloatingCart from "../components/FloatingCart";
+import FloatingTikTok from "../components/FloatingTikTok";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -60,6 +61,7 @@ export default function RootLayout({
         {children}
 
         <FloatingCart />
+        <FloatingTikTok />
 
       </body>
     </html>
